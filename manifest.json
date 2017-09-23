@@ -1,9 +1,15 @@
 {
     "manifest_version": 2,
     "name": "LatTab",
-    "description": "Learn Latin proverbs in new tabs.",
-    "version": "0.0.0.1",
+    "version": "1.0.0",
+    "description": "Learn Latin proverbs - each time you open up a new tab.",
+    "default_locale": "en",
     "chrome_url_overrides": {
         "newtab": "newtab.html"
-    }
+    },
+    "browser_action": {
+        "default_icon": "logo.png"
+    },
+    "icons": { "128": "logo.png" },
+    "author": "Josh Bender - jbendercode@gmail.com"
 }
