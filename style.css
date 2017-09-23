@@ -51,11 +51,13 @@ table {
 */
 
 body {
-    background-color: #242424;
+    /*background-color: #242424;*/
+    background: url(./mask.png) #242424 repeat center;
 }
 
 #text-container {
     margin-top: 30vh;
+    margin-bottom: 20px;
     text-align: center;
     padding: 20px;
 }
@@ -64,7 +66,7 @@ body {
     line-height: 38px;
     font-size: 28px;
     letter-spacing: 1.6pt;
-    color: #ACACAC;
+    color: #CACACA;
     text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
@@ -74,4 +76,60 @@ body {
     letter-spacing: 1.2pt;
     color: #8A8A8A;
     text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+#refresh {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+}
+
+#refresh img {
+    transform: translateY(0);
+    width: 100%;
+    height: auto;
+    -webkit-filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+    transition: all 0.25s ease-in-out;
+}
+
+#refresh img:hover {
+    cursor: pointer;
+    transform: translateY(-3px);
+    -webkit-filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.2));
+}
+
+#footer {
+    opacity: 0;
+    position: absolute;
+    bottom: 10;
+    right: 20;
+    color: #4A4A4A;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+#footer #title {
+    font-weight: bold;
+}
+
+#footer a {
+    position: relative;
+    transform: translateY(0);
+    text-decoration: none;
+    font-weight: bold;
+    color: #AA3939;
+    transition: all 0.25s ease-in-out;
+}
+
+#footer a:hover,
+#footer a:focus,
+#footer a:active {
+    color: #D57878;
+}
+
+@media (max-width: 680px) {
+    #text-container {
+        margin-top: 15vh;
+    }
 }

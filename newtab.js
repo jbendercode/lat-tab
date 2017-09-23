@@ -1,8 +1,38 @@
+/** Josh Bender - jbendercode@gmail.com
+ *  Last Updated: Sept 23rd, 2017
+ */
+
+/**
+ * On document loaded
+ */
 document.addEventListener("DOMContentLoaded", function() {
-    chrome.management.getAll(getAllCallback);
+    newTab();
 });
 
-var getAllCallback = function(list) {
+/**
+ * Once a new tab is open intialize
+ */
+function newTab() {
+    // Initialize refresh and footer element
+    var refresh = document.getElementById("refresh");
+    var footer = document.getElementById("footer");
+
+    // Fade in footer
+    fadeIn(refresh);
+    setTimeout(fadeIn, 550, footer);
+
+    // Set content on load
+    refreshContent();
+
+    // Set on click listener for refresh button
+    var refresh = document.getElementById("refresh");
+    refresh.addEventListener("click", refreshContent);
+};
+
+/**
+ * Refresh content on page
+ */
+function refreshContent(){
     // Get random phrase
     var latinObj = getRandomFromArray(phrases);
 
@@ -10,11 +40,15 @@ var getAllCallback = function(list) {
     var phrase = document.getElementById('phrase');
     var meaning = document.getElementById('meaning');
 
+
+
     // Set values of inner HTML objects
     phrase.innerHTML = latinObj.lat;
     meaning.innerHTML = latinObj.meaning;
-};
 
+    fadeIn(phrase);
+    fadeIn(meaning);
+}
 
 /**
  * Get a random item from an array
@@ -24,6 +58,28 @@ function getRandomFromArray(arrayToChooseFrom){
     var randomIndx =  Math.floor(Math.random() * arrayToChooseFrom.length);
 
     return arrayToChooseFrom[randomIndx];
+}
+
+/**
+ * Fade in element
+ * @param {HTMLElement} element 
+ */
+function fadeIn(element) {
+    // Set opacity to zero
+    element.style.opacity = 0;
+
+    // Set up inner function for animation
+    var tick = function() {
+        element.style.opacity = +element.style.opacity + 0.01;
+
+
+        if (+element.style.opacity < 1) {
+            (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16)
+        }
+    };
+
+    // Animate
+    tick();
 }
 
 // Latin phrases
@@ -310,7 +366,7 @@ const phrases = [
     },
     {
         "lat": "Historia est vitae magistra",
-        "meaning": "History is the teacher of life”"
+        "meaning": "History is the teacher of life"
     },
     {
         "lat": "Hodie mihi, cras tibi",

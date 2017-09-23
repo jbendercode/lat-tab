@@ -1,9 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "The New App Launcher",
-    "description": "Launches apps, the good way!",
+    "name": "LatTab",
+    "description": "Learn Latin proverbs in new tabs.",
     "version": "0.0.0.1",
-    "permissions": ["management"],
     "chrome_url_overrides": {
         "newtab": "newtab.html"
     }
