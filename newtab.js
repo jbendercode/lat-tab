@@ -10,12 +10,8 @@ const phrases = [];
  */
 document.addEventListener("DOMContentLoaded", function() {
   $.getJSON("/latin_phrases.json", function(json) {
-    console.log(json);
     $(json).each(function(layer, value){
-      // console.log(layer);
-      // console.log(value);
       phrases.push(value);
-      console.log(phrases);
     });
   newTab();
   });

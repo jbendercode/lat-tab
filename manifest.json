@@ -1,18 +1,20 @@
 {
-    "manifest_version": 2,
-    "name": "LatTab - Learn Latin Proverbs",
-    "short_name": "LatTab",
-    "version": "1.0.0",
-    "description": "Learn Latin proverbs - each time you open up a new tab.",
-    "chrome_url_overrides": {
-        "newtab": "newtab.html"
-    },
-    "browser_action": {
-        "default_icon": "logo.png"
-    },
-    "background": {
-      "scripts" : ["lib/jquery-2.0.3.min.js"]
-    },
-    "icons": { "128": "logo.png" },
-    "author": "Josh Bender - jbendercode@gmail.com"
+  "manifest_version": 2,
+  "name": "LatTab - Learn Latin Proverbs",
+  "short_name": "LatTab",
+  "version": "1.0.0",
+  "description": "Learn Latin proverbs - each time you open up a new tab.",
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "browser_action": {
+    "default_icon": "logo.png",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts" : ["lib/jquery-2.0.3.min.js"]
+  },
+  "icons": { "128": "logo.png" },
+  "permissions": [ "storage" ],
+  "author": "Josh Bender - jbendercode@gmail.com, Skylar Bolton skylar.bolton@gmail.com"
 }
