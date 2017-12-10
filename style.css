@@ -1,6 +1,6 @@
 /*
-****** RESET STYLES
-*/
+ ****** RESET STYLES
+ */
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -11,131 +11,153 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
-	display: block;
+  display: block;
 }
 
 body {
-	line-height: 1;
+  line-height: 1;
 }
 
 ol, ul {
-	list-style: none;
+  list-style: none;
 }
 
 blockquote, q {
-	quotes: none;
+  quotes: none;
 }
 
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
-	content: none;
+  content: '';
+  content: none;
 }
 
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 /*
-****** MAIN STYLES
-*/
+ ****** MAIN STYLES
+ */
 
 body {
-    background: url(./mask.png) #242424 repeat center;
-    font-family: 'Playfair Display', serif;
+  background: url(./mask.png) #242424 repeat center;
+  font-family: 'Playfair Display', serif;
 }
 
 #text-container {
-    margin-top: 30vh;
-    margin-bottom: 20px;
-    text-align: center;
-    padding: 20px;
+  margin-top: 30vh;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 20px;
 }
 
 #phrase {
-    line-height: 38px;
-    font-size: 28px;
-    letter-spacing: 1.6pt;
-    color: #CACACA;
-    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  line-height: 38px;
+  font-size: 28px;
+  letter-spacing: 1.6pt;
+  color: #CACACA;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 #meaning {
-    line-height: 34px;
-    font-size: 24px;
-    letter-spacing: 1.2pt;
-    color: #8A8A8A;
-    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  line-height: 34px;
+  font-size: 24px;
+  letter-spacing: 1.2pt;
+  color: #8A8A8A;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
+.change {
+  display: flex;
+  align-content: space-around;
+}
 #refresh {
-    width: 40px;
-    height: 40px;
-    margin: 0 auto;
+  color: #AA3939;
+}
+#roots span{
+  color: steelblue !important;
+}
+ .roots a{
+  color: steelblue !important;
+ }
+.refresh {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  font-size: 18;
+  font-weight: 700;
+}
+.refresh-type{
 }
 
-#refresh img {
-    transform: translateY(0);
-    width: 100%;
-    height: auto;
-    -webkit-filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
-    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
-    transition: all 0.25s ease-in-out;
+.refresh img {
+  transform: translateY(0);
+  width: 100%;
+  height: auto;
+  -webkit-filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+  transition: all 0.25s ease-in-out;
+  margin-bottom: 5px;
 }
 
-#refresh img:hover {
-    cursor: pointer;
-    transform: translateY(-3px);
-    -webkit-filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.2));
-    filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.2));
+.refresh img:hover {
+  cursor: pointer;
+  transform: translateY(-3px);
+  -webkit-filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.2));
 }
 
 #footer {
-    opacity: 0;
-    position: absolute;
-    bottom: 10;
-    right: 20;
-    color: #4A4A4A;
-    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  position: absolute;
+  bottom: 10;
+  color: #4A4A4A;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  right: 20px;
 }
 
-#footer #title {
-    font-weight: bold;
+
+#footer .title {
+  font-weight: bold;
+}
+#footer, #editors{
+  text-align: right;
 }
 
 #footer a {
-    position: relative;
-    transform: translateY(0);
-    text-decoration: none;
-    font-weight: bold;
-    color: #AA3939;
-    transition: all 0.25s ease-in-out;
+  position: relative;
+  transform: translateY(0);
+  text-decoration: none;
+  font-weight: bold;
+  color: #AA3939;
+  transition: all 0.25s ease-in-out;
 }
 
 #footer a:hover,
 #footer a:focus,
 #footer a:active {
-    color: #D57878;
+  color: #D57878;
 }
 
 @media (max-width: 680px) {
-    #text-container {
-        margin-top: 15vh;
-    }
+  #text-container {
+    margin-top: 15vh;
+  }
 }

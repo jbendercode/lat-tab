@@ -4,18 +4,27 @@
 
 // Latin phrases
 const phrases = [];
+// Latin Roots
+const latin_roots = [];
+var refresh;
+var roots;
+var footer;
+var phrase;
+var meaning;
+
 
 /**
  * On document loaded
  */
 document.addEventListener("DOMContentLoaded", function() {
-  $.getJSON("/latin_phrases.json", function(json) {
-    console.log(json);
+  $.getJSON("/latin_roots.json", function(json) {
     $(json).each(function(layer, value){
-      // console.log(layer);
-      // console.log(value);
+      latin_roots.push(value);
+    });
+  });
+  $.getJSON("/latin_phrases.json", function(json) {
+    $(json).each(function(layer, value){
       phrases.push(value);
-      console.log(phrases);
     });
   newTab();
   });
@@ -26,8 +35,11 @@ document.addEventListener("DOMContentLoaded", function() {
  */
 function newTab() {
   // Initialize refresh and footer element
-  var refresh = document.getElementById("refresh");
-  var footer = document.getElementById("footer");
+  refresh = document.getElementById("refresh");
+  roots   = document.getElementById("roots");
+  footer  = document.getElementById("footer");
+  phrase  = document.getElementById('phrase');
+  meaning = document.getElementById('meaning');
 
   // Fade in footer
   fadeIn(refresh);
@@ -37,8 +49,8 @@ function newTab() {
   refreshContent();
 
   // Set on click listener for refresh button
-  var refresh = document.getElementById("refresh");
   refresh.addEventListener("click", refreshContent);
+  roots.addEventListener("click", getRoot);
 };
 
 /**
@@ -48,15 +60,20 @@ function refreshContent(){
   // Get random phrase
   var latinObj = getRandomFromArray(phrases);
 
-  // Assign DOM objects
-  var phrase = document.getElementById('phrase');
-  var meaning = document.getElementById('meaning');
-
-
-
   // Set values of inner HTML objects
   phrase.innerHTML = latinObj.lat;
   meaning.innerHTML = latinObj.meaning;
+
+  fadeIn(phrase);
+  fadeIn(meaning);
+}
+function getRoot(){
+  // Get random phrase
+  var root = getRandomFromArray(latin_roots);
+
+  // Set values of inner HTML objects
+  phrase.innerHTML = root.root;
+  meaning.innerHTML = root.meaning;
 
   fadeIn(phrase);
   fadeIn(meaning);
