@@ -92,11 +92,17 @@ body {
   color: #AA3939;
 }
 #roots span{
-  color: steelblue !important;
+  color: steelblue;
 }
- .roots a{
-  color: steelblue !important;
- }
+#footer .roots a{
+  color: steelblue;
+}
+#footer .roots a:hover,
+#footer .roots a:focus,
+#footer .roots a:active {
+  color: skyblue;
+}
+
 .refresh {
   width: 40px;
   height: 40px;
@@ -107,19 +113,24 @@ body {
 .refresh-type{
 }
 
-.refresh img {
+.refresh {
   transform: translateY(0);
+  transition: all 0.25s ease-in-out;
+}
+
+.refresh:hover {
+  cursor: pointer;
+  transform: translateY(-3px);
+}
+.refresh img {
   width: 100%;
   height: auto;
   -webkit-filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
-  transition: all 0.25s ease-in-out;
   margin-bottom: 5px;
 }
 
 .refresh img:hover {
-  cursor: pointer;
-  transform: translateY(-3px);
   -webkit-filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.2));
   filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.2));
 }
@@ -133,12 +144,14 @@ body {
   right: 20px;
 }
 
-
 #footer .title {
   font-weight: bold;
 }
 #footer, #editors{
   text-align: right;
+}
+#author{
+  margin-bottom: 6px;
 }
 
 #footer a {
