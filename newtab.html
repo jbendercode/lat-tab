@@ -1,21 +1,35 @@
 <html>
-<head>
+  <head>
     <title>New LatTab</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet">
     <script type="text/javascript" src="/lib/jquery-2.0.3.min.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="text-container">
-        <div id="phrase"></div>
-        <div id="meaning"></div>
+      <div id="phrase"></div>
+      <div id="meaning"></div>
     </div>
-    <div id="refresh">
+    <div class="change">
+      <div id="refresh" class="refresh">
         <img src="./refresh.png" alt="refresh button" />
+        <span class="refresh-type">Quote</span>
+      </div>
+      <div id="roots" class="refresh">
+        <img src="./refresh.png" alt="refresh button" />
+        <span class="refresh-type">Root</span>
+      </div>
     </div>
-    <div id="footer"><span id="title">LatTab</span> - Developed by
+    <div id="footer">
+      <div id="author">
+        <span class="title">LatTab</span> - Developed by
         <a href="https://github.com/jbendercode" target="none">JbenderCode</a>
+      </div>
+      <div class="editors roots">
+        <span class="title ">Roots added by</span>
+        <a href="https://github.com/shadoath" target="none">Shadoath</a>
+      </div>
     </div>
     <script src="newtab.js"></script>
-</body>
+  </body>
 </html>
