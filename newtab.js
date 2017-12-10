@@ -17,12 +17,12 @@ var meaning;
  * On document loaded
  */
 document.addEventListener("DOMContentLoaded", function() {
-  $.getJSON("/latin_roots.json", function(json) {
+  $.getJSON("/lib/latin_roots.json", function(json) {
     $(json).each(function(layer, value){
       latin_roots.push(value);
     });
   });
-  $.getJSON("/latin_phrases.json", function(json) {
+  $.getJSON("/lib/latin_phrases.json", function(json) {
     $(json).each(function(layer, value){
       phrases.push(value);
     });
