@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
     $(json).each(function(layer, value){
       phrases.push(value);
     });
-  newTab();
+    newTab();
   });
 });
 
@@ -46,18 +46,25 @@ function newTab() {
   setTimeout(fadeIn, 550, footer);
 
   // Set content on load
-  refreshContent();
+  chrome.storage.sync.get("default", function(item) {
+    if (item['default'] == "root"){
+      refreshRoot();
+    }else{
+      refreshPhrase();
+    }
+  });
 
   // Set on click listener for refresh button
-  refresh.addEventListener("click", refreshContent);
-  roots.addEventListener("click", getRoot);
+  refresh.addEventListener("click", refreshPhrase);
+  roots.addEventListener("click", refreshRoot);
 };
 
 /**
  * Refresh content on page
  */
-function refreshContent(){
+function refreshPhrase(){
   // Get random phrase
+  chrome.storage.sync.set({"default": "phrase"});
   var latinObj = getRandomFromArray(phrases);
 
   // Set values of inner HTML objects
@@ -67,8 +74,9 @@ function refreshContent(){
   fadeIn(phrase);
   fadeIn(meaning);
 }
-function getRoot(){
+function refreshRoot(){
   // Get random phrase
+  chrome.storage.sync.set({"default": "root"});
   var root = getRandomFromArray(latin_roots);
 
   // Set values of inner HTML objects
