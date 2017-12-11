@@ -898,5 +898,17 @@
   {
     "lat": "Vivit post funera virtus",
     "meaning": "Virtue survives the grave"
+  },
+  {
+    "lat": "Vitam ante mortem",
+    "meaning": "Life before death"
+  },
+  {
+    "lat": "Iter ante destination",
+    "meaning": "Journey before destination"
+  },
+  {
+    "lat": "Viribus ante infirmitatem",
+    "meaning": "Strength before weakness"
   }
 ]
