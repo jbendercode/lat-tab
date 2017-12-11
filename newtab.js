@@ -2,986 +2,112 @@
  *  Last Updated: Sept 23rd, 2017
  */
 
+// Latin phrases
+const phrases = [];
+// Latin Roots
+const latin_roots = [];
+var refresh;
+var roots;
+var footer;
+var phrase;
+var meaning;
+
+
 /**
  * On document loaded
  */
 document.addEventListener("DOMContentLoaded", function() {
-    newTab();
+  $.getJSON("/lib/latin_roots.json", function(json) {
+    $(json).each(function(layer, value){
+      latin_roots.push(value);
+    });
+  });
+  $.getJSON("/lib/latin_phrases.json", function(json) {
+    $(json).each(function(layer, value){
+      phrases.push(value);
+    });
+  newTab();
+  });
 });
 
 /**
- * Once a new tab is open intialize
+ * Once a new tab is open initalize
  */
 function newTab() {
-    // Initialize refresh and footer element
-    var refresh = document.getElementById("refresh");
-    var footer = document.getElementById("footer");
+  // Initialize refresh and footer element
+  refresh = document.getElementById("refresh");
+  roots   = document.getElementById("roots");
+  footer  = document.getElementById("footer");
+  phrase  = document.getElementById('phrase');
+  meaning = document.getElementById('meaning');
 
-    // Fade in footer
-    fadeIn(refresh);
-    setTimeout(fadeIn, 550, footer);
+  // Fade in footer
+  fadeIn(refresh);
+  setTimeout(fadeIn, 550, footer);
 
-    // Set content on load
-    refreshContent();
+  // Set content on load
+  refreshContent();
 
-    // Set on click listener for refresh button
-    var refresh = document.getElementById("refresh");
-    refresh.addEventListener("click", refreshContent);
+  // Set on click listener for refresh button
+  refresh.addEventListener("click", refreshContent);
+  roots.addEventListener("click", getRoot);
 };
 
 /**
  * Refresh content on page
  */
 function refreshContent(){
-    // Get random phrase
-    var latinObj = getRandomFromArray(phrases);
+  // Get random phrase
+  var latinObj = getRandomFromArray(phrases);
 
-    // Assign DOM objects
-    var phrase = document.getElementById('phrase');
-    var meaning = document.getElementById('meaning');
+  // Set values of inner HTML objects
+  phrase.innerHTML = latinObj.lat;
+  meaning.innerHTML = latinObj.meaning;
 
+  fadeIn(phrase);
+  fadeIn(meaning);
+}
+function getRoot(){
+  // Get random phrase
+  var root = getRandomFromArray(latin_roots);
 
+  // Set values of inner HTML objects
+  phrase.innerHTML = root.root;
+  meaning.innerHTML = root.meaning;
 
-    // Set values of inner HTML objects
-    phrase.innerHTML = latinObj.lat;
-    meaning.innerHTML = latinObj.meaning;
-
-    fadeIn(phrase);
-    fadeIn(meaning);
+  fadeIn(phrase);
+  fadeIn(meaning);
 }
 
 /**
  * Get a random item from an array
- * @param {Array} arrayToChooseFrom 
+ * @param {Array} arrayToChooseFrom
  */
 function getRandomFromArray(arrayToChooseFrom){
-    var randomIndx =  Math.floor(Math.random() * arrayToChooseFrom.length);
+  var randomIndx =  Math.floor(Math.random() * arrayToChooseFrom.length);
 
-    return arrayToChooseFrom[randomIndx];
+  return arrayToChooseFrom[randomIndx];
 }
 
 /**
  * Fade in element
- * @param {HTMLElement} element 
+ * @param {HTMLElement} element
  */
 function fadeIn(element) {
-    // Set opacity to zero
-    element.style.opacity = 0;
+  // Set opacity to zero
+  element.style.opacity = 0;
 
-    // Set up inner function for animation
-    var tick = function() {
-        element.style.opacity = +element.style.opacity + 0.01;
+  // Set up inner function for animation
+  var tick = function() {
+    element.style.opacity = +element.style.opacity + 0.01;
 
 
-        if (+element.style.opacity < 1) {
-            (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16)
-        }
-    };
+    if (+element.style.opacity < 1) {
+      (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16)
+    }
+  };
 
-    // Animate
-    tick();
+  // Animate
+  tick();
 }
 
-// Latin phrases
-const phrases = [
-    {
-        "lat": "Abbati, medico, patronoque intima pande",
-        "meaning": "Do not keep secrets from your clergyman, your physician, or your patron"
-    },
-    {
-        "lat": "Abyssus abyssum invocat",
-        "meaning": "Deep calls to deep"
-    },
-    {
-        "lat": "Acquirit qui tuetur",
-        "meaning": "He acquires who preserves"
-    },
-    {
-        "lat": "Acta non verba",
-        "meaning": "Actions, not words"
-    },
-    {
-        "lat": "Alea iacta est",
-        "meaning": "The die is cast"
-    },
-    {
-        "lat": "Amicorum omnia communia",
-        "meaning": "Between friends all is common"
-    },
-    {
-        "lat": "Ancipiti plus ferit ense gula",
-        "meaning": "Gluttony slays more than the sword"
-    },
-    {
-        "lat": "Aegrescere medendo",
-        "meaning": "To be made sick by medicine"
-    },
-    {
-        "lat": "Aeque pars ligni curvi ac recti valet igni",
-        "meaning": "A piece of bent wood and a piece of straight wood are equally suitable for the fire"
-    },
-    {
-        "lat": "Age quod agis",
-        "meaning": "Do what you do"
-    },
-    {
-        "lat": "Aliquis in omnibus est nullus in singulis",
-        "meaning": "Someone in all, is nothing in one"
-    },
-    {
-        "lat": "Amat victoria curam",
-        "meaning": "Victory loves diligence"
-    },
-    {
-        "lat": "Aquila non capit muscas",
-        "meaning": "An eagle does not catch flies"
-    },
-    {
-        "lat": "Auctoritas non veritas facit legem",
-        "meaning": "Authority, not truth, makes law"
-    },
-    {
-        "lat": "Audentes fortuna iuvat",
-        "meaning": "Fortune favours the bold"
-    },
-    {
-        "lat": "Bellum se ipsum alet",
-        "meaning": "The war will feed itself"
-    },
-    {
-        "lat": "Bene diagnoscitur, bene curatur",
-        "meaning": "Well diagnosed, well cured"
-    },
-    {
-        "lat": "Bis dat qui cito dat",
-        "meaning": "He gives twice who gives quickly"
-    },
-    {
-        "lat": "Bonum est iniurias oblivisci",
-        "meaning": "It is good to forget wrongs"
-    },
-    {
-        "lat": "Brevis oratio penetrat coelos",
-        "meaning": "Short prayers reach heaven"
-    },
-    {
-        "lat": "Carpe diem",
-        "meaning": "Seize the day"
-    },
-    {
-        "lat": "Carthago delenda est",
-        "meaning": "Carthage is to be destroyed"
-    },
-    {
-        "lat": "Cave ab homine unius libri",
-        "meaning": "Beware the man of one book"
-    },
-    {
-        "lat": "Citius venit malum quam revertitur",
-        "meaning": "Evil arrives faster than it leaves"
-    },
-    {
-        "lat": "Cito maturum cito putridum",
-        "meaning": "Quickly ripe, quickly rotten"
-    },
-    {
-        "lat": "Cogitationes posteriores sunt saniores",
-        "meaning": "Second thoughts are ever wiser"
-    },
-    {
-        "lat": "Contritionem praec superbia",
-        "meaning": "Pride precedes a fall"
-    },
-    {
-        "lat": "Cornix scorpium rapuit",
-        "meaning": "The crow seized a scorpion"
-    },
-    {
-        "lat": "Corruptio optimi pessima est",
-        "meaning": "The corruption of the best is the worst"
-    },
-    {
-        "lat": "Corvus oculum corvi non eruit",
-        "meaning": "A raven does not pluck out the eyes of another raven"
-    },
-    {
-        "lat": "Cui bono?",
-        "meaning": "To whose good?"
-    },
-    {
-        "lat": "Cuilibet fatuo placet sua calva",
-        "meaning": "Every fool is pleased with his own folly"
-    },
-    {
-        "lat": "Curae canitiem inducunt",
-        "meaning": "Worry brings grey hair"
-    },
-    {
-        "lat": "De gustibus non est disputandum",
-        "meaning": "Of tastes there is no disputing"
-    },
-    {
-        "lat": "Deus quem punire vult dementat",
-        "meaning": "Whom God wishes to destroy, he first makes mad"
-    },
-    {
-        "lat": "Dii facientes adiuvant",
-        "meaning": "The gods aid the active"
-    },
-    {
-        "lat": "Dives aut iniquus est, aut iniqui haeres",
-        "meaning": "A rich man is either a knave, or the heir of a knave"
-    },
-    {
-        "lat": "Dives est qui sibi nihil deesse putat",
-        "meaning": "The rich man is the one who thinks to himself that nothing is lacking"
-    },
-    {
-        "lat": "Divide et impera",
-        "meaning": "Divide and conquer"
-    },
-    {
-        "lat": "Docendo discimus",
-        "meaning": "By teaching we learn"
-    },
-    {
-        "lat": "Ductus exemplo",
-        "meaning": "Leadership by example"
-    },
-    {
-        "lat": "Dulce bellum inexpertis",
-        "meaning": "War is sweet to those who have never experienced it"
-    },
-    {
-        "lat": "Dulce et decorum est pro patria mori",
-        "meaning": "Sweet and honorable it is, to die for the fatherland"
-    },
-    {
-        "lat": "Dulce pomum quum abest custos",
-        "meaning": "Sweet is the apple when the keeper is away"
-    },
-    {
-        "lat": "Duo lepores qui insequitur, neutrum capit",
-        "meaning": "Who chases two rabbits, catches neither"
-    },
-    {
-        "lat": "Dum anima est, spes est",
-        "meaning": "While there is life there is hope"
-    },
-    {
-        "lat": "Dum spiro, spero",
-        "meaning": "While I breathe, I hope"
-    },
-    {
-        "lat": "Dum vivimus, vivamus!",
-        "meaning": "While we live, let us live!"
-    },
-    {
-        "lat": "Effectus sequitir causam",
-        "meaning": "Effects follow causes"
-    },
-    {
-        "lat": "Errare humanum est",
-        "meaning": "To err is human"
-    },
-    {
-        "lat": "Esse quam videri",
-        "meaning": "To be rather than to seem"
-    },
-    {
-        "lat": "Et si omnes ego non",
-        "meaning": "Even if all others, not I"
-    },
-    {
-        "lat": "Etiam capillus unus habet umbram suam",
-        "meaning": "Even a single hair casts its shadow"
-    },
-    {
-        "lat": "Ex granis acervus",
-        "meaning": "A heap is made from grains"
-    },
-    {
-        "lat": "Ex malis moribus bonae leges natae sunt",
-        "meaning": "Bad customs have given birth to good laws"
-    },
-    {
-        "lat": "Ex nihilo nihil fit",
-        "meaning": "Nothing comes from nothing"
-    },
-    {
-        "lat": "Experto crede",
-        "meaning": "Trust the expert"
-    },
-    {
-        "lat": "Exceptio probat regulam",
-        "meaning": "The exception proves the rule"
-    },
-    {
-        "lat": "Extremis malis extrema remedia",
-        "meaning": "Extreme remedies for extreme ills"
-    },
-    {
-        "lat": "Expecta bos olim herba",
-        "meaning": "Expect a cow where there is grass"
-    },
-    {
-        "lat": "Facilis descensus Averno",
-        "meaning": "The descent to hell is easy"
-    },
-    {
-        "lat": "Festina lente",
-        "meaning": "Make haste slowly"
-    },
-    {
-        "lat": "Fides facit fidem",
-        "meaning": "Confidence begets confidence"
-    },
-    {
-        "lat": "Fide nemini",
-        "meaning": "Trust no one"
-    },
-    {
-        "lat": "Finis origine pendet",
-        "meaning": "The end depends on the beginning"
-    },
-    {
-        "lat": "Forma boni fragilis est",
-        "meaning": "The form of the good is fragile"
-    },
-    {
-        "lat": "Fraus hominum ad perniciem, et integritas ad salutem vocat",
-        "meaning": "Deceit summons danger and honesty brings safety"
-    },
-    {
-        "lat": "Fronti nulla fides",
-        "meaning": "No faith in appearances"
-    },
-    {
-        "lat": "Generosus equus non curat canem latrantem",
-        "meaning": "The well bred horse ignores the barking dog"
-    },
-    {
-        "lat": "Gutta cavat lapidem non vi, sed saepe cadendo",
-        "meaning": "A drop hollows out the stone not by strength, but falling many times"
-    },
-    {
-        "lat": "Historia est vitae magistra",
-        "meaning": "History is the teacher of life"
-    },
-    {
-        "lat": "Hodie mihi, cras tibi",
-        "meaning": "To me today, to you tomorrow"
-    },
-    {
-        "lat": "Fere homines libenter id quod volunt credunt",
-        "meaning": "Often, men freely believe that which they wish"
-    },
-    {
-        "lat": "Homo sum, humani nihil a me alienum puto",
-        "meaning": "I am a human, I consider nothing human alien to me"
-    },
-    {
-        "lat": "Honor sequitur fugientem",
-        "meaning": "Honor follows the one who flees from her"
-    },
-    {
-        "lat": "Hostium munera, non munera",
-        "meaning": "Gifts of enemies are not gifts"
-    },
-    {
-        "lat": "Ignavum fortuna repugnat",
-        "meaning": "Fortune disdains the lazy"
-    },
-    {
-        "lat": "Ignorantia legis non excusat",
-        "meaning": "Ignorance of the law is no excuse"
-    },
-    {
-        "lat": "Improbe Neptunum accusat, qui iterum naufragiam facit",
-        "meaning": "He unjustly blames Neptune, who suffers shipwreck twice"
-    },
-    {
-        "lat": "In dubio abstine",
-        "meaning": "When in doubt, abstain"
-    },
-    {
-        "lat": "In iudicando criminosa est celeritas",
-        "meaning": "Haste in judging is shameful"
-    },
-    {
-        "lat": "In eadam sumus navi",
-        "meaning": "We are in the same boat"
-    },
-    {
-        "lat": "In necessariis unitas, in dubiis libertas, in omnibus caritas",
-        "meaning": "In necessary things unity, in doubtful things liberty, in all things kindness"
-    },
-    {
-        "lat": "In nullum avarus bonus est, in se pessimus",
-        "meaning": "The covetous man is good to none and worst to himself"
-    },
-    {
-        "lat": "In propria causa nemo debet esse iudex",
-        "meaning": "No one should be the judge in his own trial"
-    },
-    {
-        "lat": "Aut viam inveniam aut faciam",
-        "meaning": "I will either find a way, or make one"
-    },
-    {
-        "lat": "In vino veritas",
-        "meaning": "In wine there is truth"
-    },
-    {
-        "lat": "Inimicum quamvis humilem metuendum est",
-        "meaning": "An enemy, however small, is to be feared"
-    },
-    {
-        "lat": "Innumeras curas secum adferunt liberi",
-        "meaning": "Children bring with them countless cares"
-    },
-    {
-        "lat": "Interdum stultus bene loquitur",
-        "meaning": "Sometimes a fool speaks well"
-    },
-    {
-        "lat": "Ira furor brevis est",
-        "meaning": "Anger is brief insanity"
-    },
-    {
-        "lat": "Latet anguis in herba",
-        "meaning": "A snake lurks in the grass"
-    },
-    {
-        "lat": "Lumen soli mutuum das",
-        "meaning": "You are lending light to the sun"
-    },
-    {
-        "lat": "Mala herba cito crescit",
-        "meaning": "An ill weed grows apace"
-    },
-    {
-        "lat": "Mali principii malus finis",
-        "meaning": "A bad beginning has a bad ending"
-    },
-    {
-        "lat": "Malum consilium est, quod mutari non potest",
-        "meaning": "Bad is the plan which is unable to change"
-    },
-    {
-        "lat": "Malum quidem nullum esse sine aliquo bono",
-        "meaning": "There is, to be sure, no evil without something good"
-    },
-    {
-        "lat": "Manus manum lavat",
-        "meaning": "One hand washes the other"
-    },
-    {
-        "lat": "Mater artium necessitas",
-        "meaning": "Necessity is the mother of invention"
-    },
-    {
-        "lat": "Medice, cura te ipsum",
-        "meaning": "Physician, heal thyself"
-    },
-    {
-        "lat": "Medicus curat, natura sanat",
-        "meaning": "The doctor cares for his patient, nature heals him"
-    },
-    {
-        "lat": "Melius est nomen bonum quam divitae multae",
-        "meaning": "A good name is better than great riches"
-    },
-    {
-        "lat": "Mendax memorem esse oportet",
-        "meaning": "A liar should have a good memory"
-    },
-    {
-        "lat": "Mens sana in corpore sano",
-        "meaning": "A healthy mind in a healthy body"
-    },
-    {
-        "lat": "Misera fortuna, qui caret inimico",
-        "meaning": "It is unfortunate to have no enemies"
-    },
-    {
-        "lat": "Mulier est hominis confusio",
-        "meaning": "Woman is the ruin of man"
-    },
-    {
-        "lat": "Multum clamoris, parum lanae",
-        "meaning": "Much clamor, little wool"
-    },
-    {
-        "lat": "Mundus vult decipi",
-        "meaning": "The world wants to be deceived"
-    },
-    {
-        "lat": "Ne quid expectes amicos, quod tute agere possis",
-        "meaning": "Expect nothing from friends, do what you can do yourself"
-    },
-    {
-        "lat": "Nemo regere potest nisi qui et regi",
-        "meaning": "No one is able to rule unless he is also able to be ruled"
-    },
-    {
-        "lat": "Nescis quid serus vesper vehat",
-        "meaning": "You know not what night-fall may bring"
-    },
-    {
-        "lat": "Nihil ægrius quam disciplinam accipimus",
-        "meaning": "We receive nothing with so much reluctance as instruction"
-    },
-    {
-        "lat": "Non alios suo modulo metire",
-        "meaning": "Do not judge others by your own yardstick"
-    },
-    {
-        "lat": "Nocere facile est, prodesse difficile",
-        "meaning": "It is easy to harm, it is difficult to help"
-    },
-    {
-        "lat": "Non nobis solum nati sumus",
-        "meaning": "We are not born for ourselves alone"
-    },
-    {
-        "lat": "Non quia difficilia sunt non audemus, sed quia non audemus, difficilia sunt",
-        "meaning": "It is not because things are difficult that we do not dare, but because we do not dare that things are difficult"
-    },
-    {
-        "lat": "Non semper erit aestas",
-        "meaning": "It will not always be summer"
-    },
-    {
-        "lat": "Nulla poena, nulla lex",
-        "meaning": "No penalty, no law"
-    },
-    {
-        "lat": "Nulla regula sine exceptione",
-        "meaning": "There is no rule without an exception"
-    },
-    {
-        "lat": "Nullus est liber tam mallus, ut non aliqua parte prosit",
-        "meaning": "No book is so bad, that not a single part of it may be useful"
-    },
-    {
-        "lat": "Oblata arripe",
-        "meaning": "Take what is given"
-    },
-    {
-        "lat": "Oculus animi index",
-        "meaning": "The eye is the informer/spy of the mind"
-    },
-    {
-        "lat": "Omnia cum pretio",
-        "meaning": "Everything with a price"
-    },
-    {
-        "lat": "Omnia vincit amor",
-        "meaning": "Love conquers all"
-    },
-    {
-        "lat": "Oratores fiunt, poetae nascuntur",
-        "meaning": "Orators are made, poets are born"
-    },
-    {
-        "lat": "Ophidia in herba",
-        "meaning": "Snake in the grass"
-    },
-    {
-        "lat": "Optimi natatores saepius submerguntur",
-        "meaning": "The best swimmers often drown"
-    },
-    {
-        "lat": "Optimum medicamentum quies est",
-        "meaning": "Rest is the best medicine"
-    },
-    {
-        "lat": "Otii vitia negotio discuti",
-        "meaning": "The ills of leisure are cured by labour"
-    },
-    {
-        "lat": "Otium dat vitium",
-        "meaning": "Leisure breeds vice"
-    },
-    {
-        "lat": "Pacta sunt servanda",
-        "meaning": "Agreements must be honoured"
-    },
-    {
-        "lat": "Parit enim conversatio contemptum",
-        "meaning": "Familiarity breeds contempt"
-    },
-    {
-        "lat": "Pars est beneficii quod petitur si cito neges",
-        "meaning": "A prompt refusal has in part the grace of a favour granted"
-    },
-    {
-        "lat": "Pauca sed matura",
-        "meaning": "Few, but ripe"
-    },
-    {
-        "lat": "Periculum in mora",
-        "meaning": "There is danger in delay"
-    },
-    {
-        "lat": "Barba non facit philosophum",
-        "meaning": "A beard does not make a philosopher"
-    },
-    {
-        "lat": "Piscem vorat maior minorem",
-        "meaning": "The larger fish eats the smaller"
-    },
-    {
-        "lat": "Post hoc, ergo propter hoccitation needed",
-        "meaning": "After this, therefore because of this"
-    },
-    {
-        "lat": "Potius sero quam numquam",
-        "meaning": "Better late then never"
-    },
-    {
-        "lat": "Praemonitus, praemunitus",
-        "meaning": "Forewarned is forearmed"
-    },
-    {
-        "lat": "Praesentem mulge, fugientem quid insequeris",
-        "meaning": "Milk the one that's handy; why pursue him that runs away?"
-    },
-    {
-        "lat": "Praestat cautela quam medela",
-        "meaning": "Caution is better than cure"
-    },
-    {
-        "lat": "Publica fama non semper vana",
-        "meaning": "Rumour is not always false"
-    },
-    {
-        "lat": "Pulverulenta novis bene verritur area scopis",
-        "meaning": "Newcomers are the most ambitious"
-    },
-    {
-        "lat": "Qualis rex, talis grex",
-        "meaning": "As the king, so the people"
-    },
-    {
-        "lat": "Quam magnum vectigal sit parsimonia",
-        "meaning": "How great a revenue parsimony can be"
-    },
-    {
-        "lat": "Quem di diligunt, adulescens moritur",
-        "meaning": "Whom the gods love dies young"
-    },
-    {
-        "lat": "Quis custodiet ipsos custodes?",
-        "meaning": "Who shall watch the watchmen?"
-    },
-    {
-        "lat": "Qui dormit non peccat",
-        "meaning": "He who sleeps does not sin"
-    },
-    {
-        "lat": "Qui habet aures audiendi audiat",
-        "meaning": "He that has ears to hear, let him hear"
-    },
-    {
-        "lat": "Qui non est hodie, cras minus aptus erit",
-        "meaning": "Who is not ready today, will be less so tomorrow"
-    },
-    {
-        "lat": "Qui me amat, amat et canem meam",
-        "meaning": "Who loves me, loves even my dog"
-    },
-    {
-        "lat": "Qui audet adipiscitur",
-        "meaning": "He succeeds who dares"
-    },
-    {
-        "lat": "Qui multum habet, plus cupit",
-        "meaning": "He who has much desires more"
-    },
-    {
-        "lat": "Qui non proficit, deficit",
-        "meaning": "Who does not advance, recedes"
-    },
-    {
-        "lat": "Qui pro innocente dicit, satis est eloquens",
-        "meaning": "He who speaks for the innocent is eloquent enough"
-    },
-    {
-        "lat": "Qui rogat, non errat",
-        "meaning": "Who asks, doesn't err"
-    },
-    {
-        "lat": "Qui scribit, bis legit",
-        "meaning": "Who writes, reads twice"
-    },
-    {
-        "lat": "Qui tacet consentire videtur",
-        "meaning": "Who is silent, is seen as consenting"
-    },
-    {
-        "lat": "Qui vitulum tollit, taurum subduxerit idem",
-        "meaning": "Who steals a calf will steal an ox"
-    },
-    {
-        "lat": "Qui vult dare parva non debet magna rogare",
-        "meaning": "Who is willing to give only little, should not ask for much"
-    },
-    {
-        "lat": "Quidquid latine dictum, altum videtur",
-        "meaning": "Whatever is said in Latin, appears profound"
-    },
-    {
-        "lat": "Quieta non movere",
-        "meaning": "Do not disturb what is settled"
-    },
-    {
-        "lat": "Quod gratis asseritur, gratis negatur",
-        "meaning": "What is freely asserted is freely deserted"
-    },
-    {
-        "lat": "Quod licet Iovi, non licet bovi",
-        "meaning": "What is permissible for Jove is not permissible for an ox"
-    },
-    {
-        "lat": "Quod nocet, saepe docet",
-        "meaning": "What harms, often teaches"
-    },
-    {
-        "lat": "Quod non videt oculus, cor non dolet",
-        "meaning": "What the eye doesn't see, the heart doesn't grieve"
-    },
-    {
-        "lat": "Rem tene, verba sequentur",
-        "meaning": "Grasp the subject and the words will follow"
-    },
-    {
-        "lat": "Repetitio est mater studiorum",
-        "meaning": "Repetition is the mother of study"
-    },
-    {
-        "lat": "Salus populi suprema lex esto",
-        "meaning": "Let the welfare of the people be the highest law"
-    },
-    {
-        "lat": "Sapere aude",
-        "meaning": "Dare to be wise"
-    },
-    {
-        "lat": "Sapiens omnia sua secum portat",
-        "meaning": "A wise man takes everything he owns with himself"
-    },
-    {
-        "lat": "Sapientia est potentia",
-        "meaning": "Wisdom is power"
-    },
-    {
-        "lat": "Scientia potentia est",
-        "meaning": "Knowledge is power"
-    },
-    {
-        "lat": "Scientia non habet inimicum nisi ignorantem",
-        "meaning": "Knowledge has no enemies but the ignorant"
-    },
-    {
-        "lat": "Sicut mater, ita et filia eius",
-        "meaning": "As the mother, so is her daughter"
-    },
-    {
-        "lat": "Si fueris Romae, Romano vivito more, si fueris alibi, vivito sicut ibi",
-        "meaning": "When in Rome, do as the Romans do"
-    },
-    {
-        "lat": "Si vis amari, ama",
-        "meaning": "If you wish to be loved, love"
-    },
-    {
-        "lat": "Si vis pacem, para bellum",
-        "meaning": "If you want peace, prepare for war"
-    },
-    {
-        "lat": "Silent enim leges inter arma",
-        "meaning": "Laws are silent in the midst of arms"
-    },
-    {
-        "lat": "Simia est simia, etiamsi purpura vestiatur",
-        "meaning": "An ape is an ape, even if dressed in purple"
-    },
-    {
-        "lat": "Sine scientia ars nihil est",
-        "meaning": "without knowledge, skill is nothing"
-    },
-    {
-        "lat": "Stultorum est se alienis immiscere negotiis",
-        "meaning": "It is foolish to become involved in another's work"
-    },
-    {
-        "lat": "Summum ius summa inuria",
-        "meaning": "The highest law is the highest wrong"
-    },
-    {
-        "lat": "Sunt facta verbis difficiliora",
-        "meaning": "Works are harder than words "
-    },
-    {
-        "lat": "Sunt pueri pueri pueri puerilia tractant",
-        "meaning": "Children are children and children do childish things 5"
-    },
-    {
-        "lat": "Sutor, ne ultra crepidam",
-        "meaning": "Shoemaker, not beyond the shoe"
-    },
-    {
-        "lat": "Suum cuique",
-        "meaning": "To each his own"
-    },
-    {
-        "lat": "Tarde venientibus ossa",
-        "meaning": "For those who come late, only the bones"
-    },
-    {
-        "lat": "Tempus fugit",
-        "meaning": "Time flees"
-    },
-    {
-        "lat": "Timendi causa est nescire",
-        "meaning": "The cause of fear is ignorance"
-    },
-    {
-        "lat": "Tres faciunt collegium",
-        "meaning": "Three makes a company"
-    },
-    {
-        "lat": "Tunc tua res agitur, paries cum proximus ardet",
-        "meaning": "It also concerns you when the nearest wall is burning"
-    },
-    {
-        "lat": "Tutum silentii premium",
-        "meaning": "There is safety in silence"
-    },
-    {
-        "lat": "Ut salutas, ita salutaberis",
-        "meaning": "As you preserve, so shall you be preserved"
-    },
-    {
-        "lat": "Ubi bene, ibi patria",
-        "meaning": "Where one feels good, there is one's country"
-    },
-    {
-        "lat": "Ubi concordia, ibi victoria",
-        "meaning": "Where there is harmony, there is victory"
-    },
-    {
-        "lat": "Ubi dubium, ibi libertas",
-        "meaning": "Where there is doubt, there is freedom"
-    },
-    {
-        "lat": "Ubi fumus, ibi ignis",
-        "meaning": "Where there's smoke, there's fire"
-    },
-    {
-        "lat": "Ulula cum lupis, cum quibus esse cupis",
-        "meaning": "Howl with the wolves, if you wish to be among them"
-    },
-    {
-        "lat": "Uni navi ne committas omnia",
-        "meaning": "Do not commit all to one boat"
-    },
-    {
-        "lat": "Una hirundo non facit ver",
-        "meaning": "One swallow doesn't make spring"
-    },
-    {
-        "lat": "Unus pro omnibus, omnes pro uno",
-        "meaning": "One for all and all for one"
-    },
-    {
-        "lat": "Unum castigabis, centum emendabis",
-        "meaning": "For one reprimand, a hundred corrections"
-    },
-    {
-        "lat": "Usus magister est optimus",
-        "meaning": "Experience is the best teacher"
-    },
-    {
-        "lat": "Ut ameris, amabilis esto",
-        "meaning": "That you may be loved, be lovable"
-    },
-    {
-        "lat": "Ut desint vires, tamen est laudanda voluntas",
-        "meaning": "Though strength be lacking, yet the will is to be praised"
-    },
-    {
-        "lat": "Ut sementem feceris, ita metes",
-        "meaning": "You shall reap as you have sown"
-    },
-    {
-        "lat": "Ut sis nocte levis, sit cena brevis",
-        "meaning": "That your sleeping hour be peaceful, let your dining hour be brief"
-    },
-    {
-        "lat": "Uxor formosa et vinum sunt dulcia venena",
-        "meaning": "Beautiful women and wine are sweet venom"
-    },
-    {
-        "lat": "Vade ad formicam",
-        "meaning": "Go to the ant"
-    },
-    {
-        "lat": "Vasa vana plurimum sonant",
-        "meaning": "Hollow vessels make the most sound"
-    },
-    {
-        "lat": "Velle est posse",
-        "meaning": "To be willing is to be able"
-    },
-    {
-        "lat": "Veni, vidi, vici",
-        "meaning": "I came, I saw, I conquered"
-    },
-    {
-        "lat": "Verba docent, exempla trahunt",
-        "meaning": "Words instruct, illustrations lead"
-    },
-    {
-        "lat": "Verba volant, scripta manent",
-        "meaning": "Words fly, writings remain"
-    },
-    {
-        "lat": "Verrit eo caudam, qua decidit arbore, malum",
-        "meaning": "Children observe daily and, in their behaviour, often follow the example of their parents"
-    },
-    {
-        "lat": "Veritas liberabit vos",
-        "meaning": "The truth shall make you free"
-    },
-    {
-        "lat": "Veritatem dies aperit",
-        "meaning": "Time discloses the truth"
-    },
-    {
-        "lat": "Via trita, via tuta",
-        "meaning": "The beaten path is the safe path"
-    },
-    {
-        "lat": "Vincit omnia veritas",
-        "meaning": "Truth conquers all"
-    },
-    {
-        "lat": "Vincit qui patitur",
-        "meaning": "He conquers who endures"
-    },
-    {
-        "lat": "Vipera in veprecula est",
-        "meaning": "There is a viper in the bush"
-    },
-    {
-        "lat": "Viveri bis, vita posse priori frui",
-        "meaning": "It is to live twice to be able to enjoy the retrospect of your past life"
-    },
-    {
-        "lat": "Vivit post funera virtus",
-        "meaning": "Virtue survives the grave"
-    }
-]
