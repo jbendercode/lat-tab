@@ -109,8 +109,9 @@ body {
   margin: 0 auto;
   font-size: 18;
   font-weight: 700;
-}
-.refresh-type{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .refresh {
@@ -124,7 +125,7 @@ body {
 }
 .refresh img {
   width: 100%;
-  height: auto;
+  height: 42px;
   -webkit-filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
   margin-bottom: 5px;
