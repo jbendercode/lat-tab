@@ -1,5 +1,5 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "LatTab - Learn Latin Proverbs",
   "short_name": "LatTab",
   "version": "1.2.0",
