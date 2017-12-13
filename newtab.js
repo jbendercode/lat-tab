@@ -3,7 +3,8 @@
  */
 
 // Latin phrases
-const phrases = [];
+const proverbs = [];
+
 // Latin Roots
 const latin_roots = [];
 var refresh;
@@ -11,6 +12,7 @@ var roots;
 var footer;
 var phrase;
 var meaning;
+var phrases;
 
 
 /**
@@ -24,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
   $.getJSON("/lib/latin_phrases.json", function(json) {
     $(json).each(function(layer, value){
-      phrases.push(value);
+      proverbs.push(value);
     });
     newTab();
   });
@@ -40,51 +42,65 @@ function newTab() {
   footer  = document.getElementById("footer");
   phrase  = document.getElementById('phrase');
   meaning = document.getElementById('meaning');
+  phrases = document.getElementById('phrases');
 
-  // Fade in footer
-  fadeIn(refresh);
-  setTimeout(fadeIn, 550, footer);
-
-  // Set content on load
   chrome.storage.sync.get("default", function(item) {
     if (item['default'] == "root"){
-      refreshRoot();
-    }else{
-      refreshPhrase();
+      roots.classList.add("selected-mode");
+    } else {
+      phrases.classList.add("selected-mode");
     }
+    
+    // Fade in footer
+    fadeIn(refresh);
+    setTimeout(fadeIn, 550, footer);
+  
+    // Set content on load
+    refreshPhrase();
+  
+    // Set on click listener for refresh button
+    refresh.addEventListener("click", refreshPhrase);
+    roots.addEventListener("click", setRoot);
+    phrases.addEventListener("click", setPhrase);
   });
-
-  // Set on click listener for refresh button
-  refresh.addEventListener("click", refreshPhrase);
-  roots.addEventListener("click", refreshRoot);
 };
 
 /**
  * Refresh content on page
  */
 function refreshPhrase(){
-  // Get random phrase
-  chrome.storage.sync.set({"default": "phrase"});
-  var latinObj = getRandomFromArray(phrases);
+  chrome.storage.sync.get("default", function(item) {
+    if (item['default'] == "root"){
+      var root = getRandomFromArray(latin_roots);
+      
+      // Set values of inner HTML objects
+      phrase.innerHTML = root.root;
+      meaning.innerHTML = root.meaning;
+    } else {
+      var latinObj = getRandomFromArray(proverbs);
+    
+      // Set values of inner HTML objects
+      phrase.innerHTML = latinObj.lat;
+      meaning.innerHTML = latinObj.meaning;
+    }
 
-  // Set values of inner HTML objects
-  phrase.innerHTML = latinObj.lat;
-  meaning.innerHTML = latinObj.meaning;
-
-  fadeIn(phrase);
-  fadeIn(meaning);
+    fadeIn(phrase);
+    fadeIn(meaning);
+  });
 }
-function refreshRoot(){
+
+function setRoot(){
   // Get random phrase
   chrome.storage.sync.set({"default": "root"});
-  var root = getRandomFromArray(latin_roots);
+  phrases.classList.remove("selected-mode");
+  roots.classList.add("selected-mode");
+}
 
-  // Set values of inner HTML objects
-  phrase.innerHTML = root.root;
-  meaning.innerHTML = root.meaning;
-
-  fadeIn(phrase);
-  fadeIn(meaning);
+function setPhrase(){
+  // Get random phrase
+  chrome.storage.sync.set({"default": "phrase"});
+  phrases.classList.add("selected-mode");
+  roots.classList.remove("selected-mode");
 }
 
 /**
