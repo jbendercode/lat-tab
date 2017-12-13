@@ -85,13 +85,16 @@ body {
 }
 
 .change {
-  display: flex;
-  align-content: space-around;
+  text-align: center;
 }
-#refresh {
-  color: #AA3939;
+
+.mode {
+  color: #686868;
+  padding: 3px;
+  cursor: pointer;
 }
-#roots span{
+
+.selected-mode {
   color: steelblue;
 }
 #footer .roots a{
@@ -112,6 +115,12 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.switch-mode {
+  margin-top: 20px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .refresh {
