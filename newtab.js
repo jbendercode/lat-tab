@@ -50,14 +50,14 @@ function newTab() {
     } else {
       phrases.classList.add("selected-mode");
     }
-    
+
     // Fade in footer
     fadeIn(refresh);
     setTimeout(fadeIn, 550, footer);
-  
+
     // Set content on load
     refreshPhrase();
-  
+
     // Set on click listener for refresh button
     refresh.addEventListener("click", refreshPhrase);
     roots.addEventListener("click", setRoot);
@@ -72,13 +72,13 @@ function refreshPhrase(){
   chrome.storage.sync.get("default", function(item) {
     if (item['default'] == "root"){
       var root = getRandomFromArray(latin_roots);
-      
+
       // Set values of inner HTML objects
       phrase.innerHTML = root.root;
       meaning.innerHTML = root.meaning;
     } else {
       var latinObj = getRandomFromArray(proverbs);
-    
+
       // Set values of inner HTML objects
       phrase.innerHTML = latinObj.lat;
       meaning.innerHTML = latinObj.meaning;
