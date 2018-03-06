@@ -83,6 +83,15 @@ body {
   color: #8A8A8A;
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
+#example{
+  color: darkgray;
+}
+#example span{
+  text-transform: capitalize;
+}
+#example p{
+  padding: 3px;
+}
 
 .change {
   text-align: center;

@@ -12,6 +12,7 @@ var roots;
 var footer;
 var phrase;
 var meaning;
+var example;
 var phrases;
 
 
@@ -42,6 +43,7 @@ function newTab() {
   footer  = document.getElementById("footer");
   phrase  = document.getElementById('phrase');
   meaning = document.getElementById('meaning');
+  example = document.getElementById('example');
   phrases = document.getElementById('phrases');
 
   chrome.storage.sync.get("default", function(item) {
@@ -74,19 +76,36 @@ function refreshPhrase(){
       var root = getRandomFromArray(latin_roots);
 
       // Set values of inner HTML objects
-      phrase.innerHTML = root.root;
+      phrase.innerHTML  = root.root;
       meaning.innerHTML = root.meaning;
+      setExample(root.examples_definitions);
     } else {
-      var latinObj = getRandomFromArray(proverbs);
+      var latinProverb = getRandomFromArray(proverbs);
 
       // Set values of inner HTML objects
-      phrase.innerHTML = latinObj.lat;
-      meaning.innerHTML = latinObj.meaning;
+      phrase.innerHTML  = latinProverb.lat;
+      meaning.innerHTML = latinProverb.meaning;
+      example.innerHTML = "";
     }
-
     fadeIn(phrase);
     fadeIn(meaning);
+    fadeIn(example);
   });
+}
+
+function setExample(examples){
+  var array = examples.split(";")
+  console.log(array);
+
+  var formatted = ""
+  var word_and_use = [];
+  $(array).each(function(index, value){
+    word_and_use = value.split(" - ")
+    formatted += "<p><span>"+word_and_use[0]+":</span> "+word_and_use[1]+"</p>"
+  })
+
+  console.log(formatted);
+  example.innerHTML = formatted;
 }
 
 function setRoot(){
