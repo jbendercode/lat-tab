@@ -97,12 +97,13 @@ function setExample(examples){
   var array = examples.split(";")
   console.log(array);
 
-  var formatted = ""
+  var formatted = "<table><tbody>";
   var word_and_use = [];
   $(array).each(function(index, value){
-    word_and_use = value.split(" - ")
-    formatted += "<p><span>"+word_and_use[0]+":</span> "+word_and_use[1]+"</p>"
+    word_and_use = value.split(" - ");
+    formatted += "<tr><td>"+word_and_use[0]+":</td><td>"+word_and_use[1]+"<td></tr>";
   })
+  formatted += "</tbody></table>";
 
   console.log(formatted);
   example.innerHTML = formatted;
