@@ -86,8 +86,20 @@ body {
 #example{
   color: darkgray;
 }
-#example span{
+#example table {
+  margin: auto;
+}
+td {
+  padding: 2px;
+  color: darkgrey;
+}
+#example td:nth-child(1){
   text-transform: capitalize;
+  text-align: right;
+  width: 50%;
+}
+#example td:nth-child(2){
+  width: 50%;
 }
 #example p{
   padding: 3px;
