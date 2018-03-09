@@ -1,0 +1,212 @@
+/*
+ ****** RESET STYLES
+ */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  text-align:center;
+  color: white;
+}
+
+h1 {
+  margin-top 2rem;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/*
+ ****** MAIN STYLES
+ */
+
+body {
+  background: url(./mask.png) #242424 repeat center;
+  font-family: 'Playfair Display', serif;
+}
+
+#text-container {
+  margin-top: 30vh;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 20px;
+}
+
+#phrase {
+  line-height: 38px;
+  font-size: 28px;
+  letter-spacing: 1.6pt;
+  color: #CACACA;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+#meaning {
+  line-height: 34px;
+  font-size: 24px;
+  letter-spacing: 1.2pt;
+  color: #8A8A8A;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+#example{
+  color: darkgray;
+}
+#example table {
+  margin: auto;
+}
+td {
+  padding: 2px;
+  color: darkgrey;
+}
+#example td:nth-child(1){
+  text-transform: capitalize;
+  text-align: right;
+  width: 50%;
+}
+#example td:nth-child(2){
+  width: 50%;
+}
+#example p{
+  padding: 3px;
+}
+
+.change {
+  text-align: center;
+}
+
+.mode {
+  color: #686868;
+  padding: 3px;
+  cursor: pointer;
+}
+
+.selected-mode {
+  color: steelblue;
+}
+#footer .roots a{
+  color: steelblue;
+}
+#footer .roots a:hover,
+#footer .roots a:focus,
+#footer .roots a:active {
+  color: skyblue;
+}
+
+.refresh {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  font-size: 18;
+  font-weight: 700;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.switch-mode {
+  margin-top: 20px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.refresh {
+  transform: translateY(0);
+  transition: all 0.25s ease-in-out;
+}
+
+.refresh:hover {
+  cursor: pointer;
+  transform: translateY(-3px);
+}
+.refresh img {
+  width: 100%;
+  height: 42px;
+  -webkit-filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+  margin-bottom: 5px;
+}
+
+.refresh img:hover {
+  -webkit-filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.2));
+}
+
+#footer {
+  opacity: 0;
+  position: absolute;
+  bottom: 10;
+  color: #4A4A4A;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  right: 20px;
+}
+
+#footer .title {
+  font-weight: bold;
+}
+#footer, #editors{
+  text-align: right;
+}
+#author{
+  margin-bottom: 6px;
+}
+
+#footer a {
+  position: relative;
+  transform: translateY(0);
+  text-decoration: none;
+  font-weight: bold;
+  color: #AA3939;
+  transition: all 0.25s ease-in-out;
+}
+
+#footer a:hover,
+#footer a:focus,
+#footer a:active {
+  color: #D57878;
+}
+
+@media (max-width: 680px) {
+  #text-container {
+    margin-top: 15vh;
+  }
+}
