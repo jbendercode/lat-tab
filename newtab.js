@@ -114,6 +114,7 @@ function setRoot(){
   chrome.storage.sync.set({"default": "root"});
   phrases.classList.remove("selected-mode");
   roots.classList.add("selected-mode");
+  refreshPhrase();
 }
 
 function setPhrase(){
@@ -121,6 +122,7 @@ function setPhrase(){
   chrome.storage.sync.set({"default": "phrase"});
   phrases.classList.add("selected-mode");
   roots.classList.remove("selected-mode");
+  refreshPhrase();
 }
 
 /**
