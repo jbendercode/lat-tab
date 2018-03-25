@@ -78,7 +78,9 @@ function refreshPhrase(){
       // Set values of inner HTML objects
       phrase.innerHTML  = root.root;
       meaning.innerHTML = root.meaning;
-      setExample(root.examples_definitions);
+      if (rootExamples){
+        setExample(root.examples_definitions);
+      }
     } else {
       var latinProverb = getRandomFromArray(proverbs);
 
