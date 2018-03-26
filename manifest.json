@@ -10,7 +10,12 @@
   "background": {
     "scripts" : ["lib/jquery-2.0.3.min.js"]
   },
+  "options_page": "options.html",
   "icons": { "128": "logo.png" },
+  "browser_action": {
+    "default_icon": "logo.png",
+    "default_popup": "options.html"
+  },
   "permissions": [ "storage" ],
   "author": "Josh Bender - jbendercode@gmail.com, Skylar Bolton - skylar.bolton@gmail.com"
 }

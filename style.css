@@ -83,6 +83,27 @@ body {
   color: #8A8A8A;
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
+#example{
+  color: darkgray;
+}
+#example table {
+  margin: auto;
+}
+td {
+  padding: 2px;
+  color: darkgrey;
+}
+#example td:nth-child(1){
+  text-transform: capitalize;
+  text-align: right;
+  width: 50%;
+}
+#example td:nth-child(2){
+  width: 50%;
+}
+#example p{
+  padding: 3px;
+}
 
 .change {
   text-align: center;

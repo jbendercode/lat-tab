@@ -12,6 +12,7 @@ var roots;
 var footer;
 var phrase;
 var meaning;
+var example;
 var phrases;
 
 
@@ -42,6 +43,7 @@ function newTab() {
   footer  = document.getElementById("footer");
   phrase  = document.getElementById('phrase');
   meaning = document.getElementById('meaning');
+  example = document.getElementById('example');
   phrases = document.getElementById('phrases');
 
   chrome.storage.sync.get("default", function(item) {
@@ -50,14 +52,14 @@ function newTab() {
     } else {
       phrases.classList.add("selected-mode");
     }
-    
+
     // Fade in footer
     fadeIn(refresh);
     setTimeout(fadeIn, 550, footer);
-  
+
     // Set content on load
     refreshPhrase();
-  
+
     // Set on click listener for refresh button
     refresh.addEventListener("click", refreshPhrase);
     roots.addEventListener("click", setRoot);
@@ -72,21 +74,41 @@ function refreshPhrase(){
   chrome.storage.sync.get("default", function(item) {
     if (item['default'] == "root"){
       var root = getRandomFromArray(latin_roots);
-      
-      // Set values of inner HTML objects
-      phrase.innerHTML = root.root;
-      meaning.innerHTML = root.meaning;
-    } else {
-      var latinObj = getRandomFromArray(proverbs);
-    
-      // Set values of inner HTML objects
-      phrase.innerHTML = latinObj.lat;
-      meaning.innerHTML = latinObj.meaning;
-    }
 
+      // Set values of inner HTML objects
+      phrase.innerHTML  = root.root;
+      meaning.innerHTML = root.meaning;
+      if (rootExamples){
+        setExample(root.examples_definitions);
+      }
+    } else {
+      var latinProverb = getRandomFromArray(proverbs);
+
+      // Set values of inner HTML objects
+      phrase.innerHTML  = latinProverb.lat;
+      meaning.innerHTML = latinProverb.meaning;
+      example.innerHTML = "";
+    }
     fadeIn(phrase);
     fadeIn(meaning);
+    fadeIn(example);
   });
+}
+
+function setExample(examples){
+  var array = examples.split(";")
+  console.log(array);
+
+  var formatted = "<table><tbody>";
+  var word_and_use = [];
+  $(array).each(function(index, value){
+    word_and_use = value.split(" - ");
+    formatted += "<tr><td>"+word_and_use[0]+":</td><td>"+word_and_use[1]+"<td></tr>";
+  })
+  formatted += "</tbody></table>";
+
+  console.log(formatted);
+  example.innerHTML = formatted;
 }
 
 function setRoot(){
@@ -94,6 +116,7 @@ function setRoot(){
   chrome.storage.sync.set({"default": "root"});
   phrases.classList.remove("selected-mode");
   roots.classList.add("selected-mode");
+  refreshPhrase();
 }
 
 function setPhrase(){
@@ -101,6 +124,7 @@ function setPhrase(){
   chrome.storage.sync.set({"default": "phrase"});
   phrases.classList.add("selected-mode");
   roots.classList.remove("selected-mode");
+  refreshPhrase();
 }
 
 /**
