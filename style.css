@@ -43,7 +43,6 @@ blockquote, q {
 
 blockquote:before, blockquote:after,
 q:before, q:after {
-  content: '';
   content: none;
 }
 
@@ -68,6 +67,39 @@ body {
   padding: 20px;
 }
 
+#search-icon::before {
+  color: white;
+}
+#search-icon img{
+  height: 20px;
+}
+#exchange-icon {
+  vertical-align: -webkit-baseline-middle;
+}
+#exchange-icon img{
+  height: 25px;
+}
+
+a {
+  color: #CACACA;
+  text-decoration: none;
+}
+#search-and-exchange{
+  display:none;
+}
+
+input{
+  background-color: #666666;
+  margin: 0px;
+  border-width: 0px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 4px;
+  width: 169px;
+}
+input::placeholder{
+  color:white;
+}
 #phrase {
   line-height: 38px;
   font-size: 28px;
@@ -106,7 +138,9 @@ td {
 }
 
 .change {
+  padding-top: 20px;
   text-align: center;
+  padding-bottom: 20px
 }
 
 .mode {
@@ -139,7 +173,6 @@ td {
 }
 
 .switch-mode {
-  margin-top: 20px;
   margin-right: auto;
   margin-left: auto;
 }
