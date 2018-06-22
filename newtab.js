@@ -1,12 +1,12 @@
-/** Josh Bender - jbendercode@gmail.com
- *  Last Updated: Sept 23rd, 2017
- */
+/** Josh Bender   - jbendercode@gmail.com
+ *  Skylar Bolton - skylar.bolton@gmail.com
+ *  Last Updated  - 2018/06/18
+**/
 
-// Latin phrases
-const proverbs = [];
-
-// Latin Roots
+const proverbs    = [];
 const latin_roots = [];
+var searching_in  = "Latin";
+var currently     = "proverb";
 var refresh;
 var roots;
 var footer;
@@ -14,7 +14,6 @@ var phrase;
 var meaning;
 var example;
 var phrases;
-
 
 /**
  * On document loaded
@@ -31,131 +30,242 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     newTab();
   });
+  $('#exchange-icon').click(function(){
+    if(searching_in == "Latin"){
+      searching_in = "English"
+    }else{
+      searching_in = "Latin"
+    }
+    $('#search-roots-and-proverbs').attr("placeholder", "Searching "+currently+"s in "+searching_in);
+    $("#search-roots-and-proverbs").focus();
+  });
+  $('#search-icon').click(function(){
+    $('#search-icon').hide();
+    $("#search-and-exchange").slideDown();
+    $("#search-roots-and-proverbs").focus();
+  });
+  $('#search-form').on('submit', function(e) { //use on if jQuery 1.7+
+    e.preventDefault();
+  });
+  $('#search-roots-and-proverbs').keyup(function() {
+    var search_text  = $('#search-roots-and-proverbs').val().trim().toLowerCase();
+    if(search_text .length > 0) {
+      search_for(search_text);
+    }
+  });
 });
+
+function search_for(search_text){
+  check  = ""
+  search = ""
+  if(searching_in == "Latin"){
+    if(currently == "root"){
+      search = latin_roots
+      check  = "root"
+    }else{
+      search = proverbs
+      check  = "lat"
+    }
+  }else{
+    check = "meaning"
+    if(currently == "root"){
+      search = latin_roots
+    }else{
+      search = proverbs
+    }
+  }
+  var result = $.grep(search, function(e){ return matchRuleShort(e[check].toLowerCase(), search_text); });
+  if (result != null){
+    if(result.length > 1){
+      pushResults(result);
+    }else if(result.length == 1){
+      result = result[0];
+      if(currently == "root"){
+        displayLatinRoot(result);
+      }else{
+        displayProverb(result);
+      }
+    }else{
+      phrase.html("No search matches");
+      meaning.html("use the wildcard (*)");
+      example.html("");
+    }
+  }
+}
+
+function pushResults(results){
+  options = [];
+  $(results).each(function(index, value){
+    if(searching_in == "English"){
+      if(currently == "proverb"){
+        options.push("<a href='#' class='load-proverb'>"+value.meaning +"</a>");
+      }else{
+        options.push("<a href='#' class='load-root'>"+value.meaning +"</a>");
+      }
+    }else{
+      if(currently == "proverb"){
+        options.push("<a href='#' class='load-proverb'>"+value.lat +"</a>");
+      }else{
+        options.push("<a href='#' class='load-root'>"+value.root +"</a>");
+      }
+    }
+  });
+  phrase.html(options.join(" | "));
+  meaning.html("");
+  example.html("");
+  if(currently == "root"){
+    loadRootListener();
+  }else{
+    loadProverbListener();
+  }
+}
+
+function loadRootListener(){
+  $('.load-root').click(function(selected_search){
+    var result;
+    if(searching_in == "Latin"){
+      result = $.grep(latin_roots, function(e){ return matchRuleShort(e.root, $(selected_search.target).text())})[0];
+    }else{
+      result = $.grep(latin_roots, function(e){ return matchRuleShort(e.meaning, $(selected_search.target).text())})[0];
+    }
+    displayLatinRoot(result);
+    $('#search-icon').show();
+    $("#search-and-exchange").hide();
+    $('#search-roots-and-proverbs').val("");
+  });
+}
+
+function loadProverbListener(){
+  $('.load-proverb').click(function(selected_search){
+    var result;
+    if(searching_in == "Latin"){
+      result = $.grep(proverbs, function(e){ return matchRuleShort(e.lat, $(selected_search.target).text())})[0];
+    }else{
+      result = $.grep(proverbs, function(e){ return matchRuleShort(e.meaning, $(selected_search.target).text())})[0];
+    }
+    displayProverb(result);
+    $('#search-icon').show();
+    $("#search-and-exchange").hide();
+    $('#search-roots-and-proverbs').val("");
+  });
+}
 
 /**
  * Once a new tab is open initalize
  */
 function newTab() {
   // Initialize refresh and footer element
-  refresh = document.getElementById("refresh");
-  roots   = document.getElementById("roots");
-  footer  = document.getElementById("footer");
-  phrase  = document.getElementById('phrase');
-  meaning = document.getElementById('meaning');
-  example = document.getElementById('example');
-  phrases = document.getElementById('phrases');
+  search  = $("#search-roots-and-proverbs");
+  refresh = $("#refresh");
+  roots   = $("#roots");
+  footer  = $("#footer");
+  phrase  = $("#phrase");
+  meaning = $("#meaning");
+  example = $("#example");
+  phrases = $("#phrases");
 
   chrome.storage.sync.get("default", function(item) {
     if (item['default'] == "root"){
-      roots.classList.add("selected-mode");
+      roots.toggleClass("selected-mode");
+      currently = "root";
+      $('#search-roots-and-proverbs').attr("placeholder", "Search "+currently+"s in "+searching_in);
     } else {
-      phrases.classList.add("selected-mode");
+      phrases.toggleClass("selected-mode");
+      currently = "proverb";
+      $('#search-roots-and-proverbs').attr("placeholder", "Search "+currently+"s in "+searching_in);
     }
 
-    // Fade in footer
     fadeIn(refresh);
-    setTimeout(fadeIn, 550, footer);
+    refreshDisplay();
 
-    // Set content on load
-    refreshPhrase();
-
-    // Set on click listener for refresh button
-    refresh.addEventListener("click", refreshPhrase);
-    roots.addEventListener("click", setRoot);
-    phrases.addEventListener("click", setPhrase);
+    refresh.click(refreshDisplay);
+    phrases.click(function(){
+      if (currently != "proverb"){
+        setPhrase();
+      }
+    });
+    roots.click(function(){
+      if (currently != "root"){
+        setRoot();
+      }
+    });
   });
 };
 
 /**
  * Refresh content on page
  */
-function refreshPhrase(){
-  chrome.storage.sync.get("default", function(item) {
-    if (item['default'] == "root"){
-      var root = getRandomFromArray(latin_roots);
-
-      // Set values of inner HTML objects
-      phrase.innerHTML  = root.root;
-      meaning.innerHTML = root.meaning;
-      if (rootExamples){
-        setExample(root.examples_definitions);
-      }
-    } else {
-      var latinProverb = getRandomFromArray(proverbs);
-
-      // Set values of inner HTML objects
-      phrase.innerHTML  = latinProverb.lat;
-      meaning.innerHTML = latinProverb.meaning;
-      example.innerHTML = "";
-    }
-    fadeIn(phrase);
-    fadeIn(meaning);
-    fadeIn(example);
-  });
+function refreshDisplay(){
+  console.log("refreshDisplay");
+  if (currently == "root"){
+    displayLatinRoot(getRandomFromArray(latin_roots));
+  } else {
+    displayProverb(getRandomFromArray(proverbs));
+  }
+  fadeIn(meaning);
+  fadeIn(example);
 }
 
 function setExample(examples){
-  var array = examples.split(";")
-  console.log(array);
+  console.log("setExample");
+  var array = examples.split(";");
 
   var formatted = "<table><tbody>";
   var word_and_use = [];
   $(array).each(function(index, value){
     word_and_use = value.split(" - ");
     formatted += "<tr><td>"+word_and_use[0]+":</td><td>"+word_and_use[1]+"<td></tr>";
-  })
+  });
   formatted += "</tbody></table>";
 
-  console.log(formatted);
-  example.innerHTML = formatted;
+  example.html(formatted);
 }
 
 function setRoot(){
-  // Get random phrase
+  console.log("setRoot");
+  currently = "root";
   chrome.storage.sync.set({"default": "root"});
-  phrases.classList.remove("selected-mode");
-  roots.classList.add("selected-mode");
-  refreshPhrase();
+  phrases.toggleClass("selected-mode");
+  roots.toggleClass("selected-mode");
+  refreshDisplay();
 }
 
 function setPhrase(){
-  // Get random phrase
+  console.log("setPhrase");
   chrome.storage.sync.set({"default": "phrase"});
-  phrases.classList.add("selected-mode");
-  roots.classList.remove("selected-mode");
-  refreshPhrase();
+  currently = "proverb";
+  phrases.toggleClass("selected-mode");
+  roots.toggleClass("selected-mode");
+  refreshDisplay();
 }
 
-/**
- * Get a random item from an array
- * @param {Array} arrayToChooseFrom
- */
+function displayLatinRoot(root){
+  phrase.html(root.root);
+  meaning.html(root.meaning);
+  if (rootExamples){
+    setExample(root.examples_definitions);
+  }
+  $('#search-roots-and-proverbs').attr("placeholder", "Search Latin roots");
+}
+
+function displayProverb(proverb){
+  phrase.html(proverb.lat);
+  meaning.html(proverb.meaning);
+  example.html("");
+  $('#search-roots-and-proverbs').attr("placeholder", "Searching "+currently+"s in "+searching_in);
+}
+
 function getRandomFromArray(arrayToChooseFrom){
   var randomIndx =  Math.floor(Math.random() * arrayToChooseFrom.length);
-
   return arrayToChooseFrom[randomIndx];
 }
 
-/**
- * Fade in element
- * @param {HTMLElement} element
- */
 function fadeIn(element) {
-  // Set opacity to zero
-  element.style.opacity = 0;
-
-  // Set up inner function for animation
-  var tick = function() {
-    element.style.opacity = +element.style.opacity + 0.01;
-
-
-    if (+element.style.opacity < 1) {
-      (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16)
-    }
-  };
-
-  // Animate
-  tick();
+  element.css('opacity', 0);
+  element.fadeTo( "slow", .8);
 }
 
+//https://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript
+function matchRuleShort(str, rule) {
+  return new RegExp("^" + rule.replace("*", ".+?") + "$").test(str);
+}
