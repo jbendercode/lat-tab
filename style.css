@@ -78,6 +78,7 @@ body {
 }
 #exchange-icon img{
   height: 25px;
+  filter: invert(74%);
 }
 
 a {
