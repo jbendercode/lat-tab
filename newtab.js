@@ -19,6 +19,11 @@ var phrases;
  * On document loaded
  */
 document.addEventListener("DOMContentLoaded", function() {
+  $.getJSON("/lib/latin/roots/a.json", function(json) {
+    $(json).each(function(layer, value){
+      latin_roots.push(value);
+    });
+  });
   $.getJSON("/lib/latin_roots.json", function(json) {
     $(json).each(function(layer, value){
       latin_roots.push(value);
