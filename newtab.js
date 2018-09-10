@@ -24,6 +24,11 @@ document.addEventListener("DOMContentLoaded", function() {
       latin_roots.push(value);
     });
   });
+  $.getJSON("/lib/latin/roots/b.json", function(json) {
+    $(json).each(function(layer, value){
+      latin_roots.push(value);
+    });
+  });
   $.getJSON("/lib/latin_roots.json", function(json) {
     $(json).each(function(layer, value){
       latin_roots.push(value);

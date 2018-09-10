@@ -1,10 +1,4 @@
 [
-  {
-    "root": "axi-",
-    "meaning": "axis",
-    "origin": "Latin",
-    "examples_definitions": "axis, axisymmetry"
-  },
  {
    "root": "a",
    "meaning": "on",
@@ -100,5 +94,11 @@
    "meaning": "bird",
    "origin": "Latin",
    "examples_definitions": "aviary - a large enclosure for birds; aviatrix - a female airplane pilot; aviation - the art of designing or operating aircraft"
- }
+ },
+ {
+   "root": "axi-",
+   "meaning": "axis",
+   "origin": "Latin",
+   "examples_definitions": "axis, axisymmetry"
+ },
 ]
