@@ -221,6 +221,22 @@ function setExample(examples){
   example.html(formatted);
 }
 
+function viewed(name){
+  console.log("viewed: "+name);
+  chrome.storage.sync.get(name, function(item) {
+    count = item[name];
+    if(count === undefined){
+      count = 1;
+    }else{
+      count++;
+    }
+    console.log("count: "+count);
+    var obj = {};
+    obj[name] = count;
+    chrome.storage.sync.set(obj);
+  });
+}
+
 function setRoot(){
   console.log("setRoot");
   currently = "root";
@@ -246,6 +262,7 @@ function displayLatinRoot(root){
     setExample(root.examples_definitions);
   }
   $('#search-roots-and-proverbs').attr("placeholder", "Search Latin roots");
+  viewed(root.root)
 }
 
 function displayProverb(proverb){
