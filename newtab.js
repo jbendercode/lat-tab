@@ -230,7 +230,7 @@ function viewed(name){
     }else{
       count++;
     }
-    console.log("count: "+count);
+    $("#count").html(count);
     var obj = {};
     obj[name] = count;
     chrome.storage.sync.set(obj);

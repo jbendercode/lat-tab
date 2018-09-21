@@ -153,6 +153,9 @@ td {
 .selected-mode {
   color: steelblue;
 }
+#count {
+  color: white;
+}
 #footer .roots a{
   color: steelblue;
 }
@@ -201,7 +204,6 @@ td {
 }
 
 #footer {
-  opacity: 0;
   position: absolute;
   bottom: 10;
   color: #4A4A4A;
