@@ -155,6 +155,10 @@ td {
 }
 #count {
   color: white;
+  float: left;
+  position: absolute;
+  bottom: 10;
+  text-align: left;
 }
 #footer .roots a{
   color: steelblue;
