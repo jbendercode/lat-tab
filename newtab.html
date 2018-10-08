@@ -6,17 +6,30 @@
     <script type="text/javascript" src="/lib/jquery-2.0.3.min.js"></script>
   </head>
   <body>
+    <!-- TODO add: https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English -->
     <div id="text-container">
-      <div id="phrase"></div>
-      <div id="meaning"></div>
-      <div id="example"></div>
+      <div id="search-container">
+        <span id="search-icon">
+          <img src="./search.svg" alt="" />
+        </span>
+        <div id="search-and-exchange">
+          <input id="search-roots-and-proverbs" placeholder="Search latin roots" autocomplete="off"></input>
+          <span id="exchange-icon">
+            <img src="./exchange.svg" alt="" />
+          </span>
+        </span>
+        </form>
+      </div>
+      <div id="phrase"  alt="phrase"></div>
+      <div id="meaning" alt="meaning"></div>
+      <div id="example" alt="example"></div>
     </div>
     <div class="change">
       <div id="refresh" class="refresh">
         <img src="./refresh.png" alt="refresh button" />
       </div>
     </div>
-    <div class="change switch-mode">
+    <div class="switch-mode">
       <div id="phrases" class="mode">
         <span class="refresh-type">Proverbs</span>
       </div>

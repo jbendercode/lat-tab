@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "LatTab - Learn Latin Proverbs",
   "short_name": "LatTab",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Learn Latin proverbs - each time you open up a new tab.",
   "chrome_url_overrides": {
     "newtab": "newtab.html"
