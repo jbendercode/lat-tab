@@ -174,6 +174,9 @@ function newTab() {
       currently = "proverb";
       $('#search-roots-and-proverbs').attr("placeholder", "Search "+currently+"s in "+searching_in);
     }
+    if(hideCount){
+      $("#count").hide();
+    }
 
     fadeIn(refresh);
     refreshDisplay();
