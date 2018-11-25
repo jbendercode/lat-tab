@@ -224,19 +224,35 @@ function setExample(examples){
   example.html(formatted);
 }
 
-function viewed(name){
-  console.log("viewed: "+name);
-  chrome.storage.sync.get(name, function(item) {
-    count = item[name];
+function viewed(name, is_root){
+  // TODO store count in JSON for Roots and Proverbs
+  // https://developer.chrome.com/extensions/storage#property-local
+  key = "";
+  if(is_root){
+    key = "root_"+name[0]
+  }else{
+    key = "proverb_"+name[0]
+  }
+
+  chrome.storage.sync.get([key], function(result) {
+    var views_hash = {};
+    if(result[key] !== undefined){
+      views_hash = JSON.parse(result[key])
+    }
+
+    var count = views_hash[name];
     if(count === undefined){
       count = 1;
     }else{
       count++;
     }
     $("#count").html(count);
-    var obj = {};
-    obj[name] = count;
-    chrome.storage.sync.set(obj);
+    views_hash[name] = count
+
+    //Now save it
+    var news_counts  = {}
+    news_counts[key] = JSON.stringify(views_hash);
+    chrome.storage.sync.set(news_counts);
   });
 }
 
@@ -265,7 +281,7 @@ function displayLatinRoot(root){
     setExample(root.examples_definitions);
   }
   $('#search-roots-and-proverbs').attr("placeholder", "Search Latin roots");
-  viewed(root.root)
+  viewed(root.root, true)
 }
 
 function displayProverb(proverb){
@@ -273,6 +289,7 @@ function displayProverb(proverb){
   meaning.html(proverb.meaning);
   example.html("");
   $('#search-roots-and-proverbs').attr("placeholder", "Searching "+currently+"s in "+searching_in);
+  viewed(proverb.latin, false)
 }
 
 function getRandomFromArray(arrayToChooseFrom){
