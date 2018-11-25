@@ -150,8 +150,11 @@ td {
   cursor: pointer;
 }
 
-.selected-mode {
+#roots.selected-mode {
   color: steelblue;
+}
+#phrases.selected-mode {
+  color: #AA3939;
 }
 #count {
   color: white;
