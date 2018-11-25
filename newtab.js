@@ -8,12 +8,12 @@ const latin_roots = [];
 var searching_in  = "Latin";
 var currently     = "proverb";
 var refresh;
-var roots;
+var roots_select;
 var footer;
 var phrase;
 var meaning;
 var example;
-var phrases;
+var phrases_select;
 
 /**
  * On document loaded
@@ -155,22 +155,22 @@ function loadProverbListener(){
  */
 function newTab() {
   // Initialize refresh and footer element
-  search  = $("#search-roots-and-proverbs");
-  refresh = $("#refresh");
-  roots   = $("#roots");
-  footer  = $("#footer");
-  phrase  = $("#phrase");
-  meaning = $("#meaning");
-  example = $("#example");
-  phrases = $("#phrases");
+  search         = $("#search-roots-and-proverbs");
+  refresh        = $("#refresh");
+  footer         = $("#footer");
+  phrase         = $("#phrase");
+  meaning        = $("#meaning");
+  example        = $("#example");
+  roots_select   = $("#roots_select");
+  phrases_select = $("#phrases_select");
 
   chrome.storage.sync.get("default", function(item) {
     if (item['default'] == "root"){
-      roots.toggleClass("selected-mode");
+      roots_select.toggleClass("selected-mode");
       currently = "root";
       $('#search-roots-and-proverbs').attr("placeholder", "Search "+currently+"s in "+searching_in);
     } else {
-      phrases.toggleClass("selected-mode");
+      phrases_select.toggleClass("selected-mode");
       currently = "proverb";
       $('#search-roots-and-proverbs').attr("placeholder", "Search "+currently+"s in "+searching_in);
     }
@@ -182,12 +182,12 @@ function newTab() {
     refreshDisplay();
 
     refresh.click(refreshDisplay);
-    phrases.click(function(){
+    phrases_select.click(function(){
       if (currently != "proverb"){
         setPhrase();
       }
     });
-    roots.click(function(){
+    roots_select.click(function(){
       if (currently != "root"){
         setRoot();
       }
@@ -260,8 +260,8 @@ function setRoot(){
   console.log("setRoot");
   currently = "root";
   chrome.storage.sync.set({"default": "root"});
-  phrases.toggleClass("selected-mode");
-  roots.toggleClass("selected-mode");
+  phrases_select.toggleClass("selected-mode");
+  roots_select.toggleClass("selected-mode");
   refreshDisplay();
 }
 
@@ -269,8 +269,8 @@ function setPhrase(){
   console.log("setPhrase");
   chrome.storage.sync.set({"default": "phrase"});
   currently = "proverb";
-  phrases.toggleClass("selected-mode");
-  roots.toggleClass("selected-mode");
+  phrases_select.toggleClass("selected-mode");
+  roots_select.toggleClass("selected-mode");
   refreshDisplay();
 }
 
