@@ -289,7 +289,7 @@ function displayProverb(proverb){
   meaning.html(proverb.meaning);
   example.html("");
   $('#search-roots-and-proverbs').attr("placeholder", "Searching "+currently+"s in "+searching_in);
-  viewed(proverb.latin, false)
+  viewed(proverb.lat, false)
 }
 
 function getRandomFromArray(arrayToChooseFrom){
