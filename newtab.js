@@ -1,6 +1,7 @@
-/** Josh Bender   - jbendercode@gmail.com
+/**
  *  Skylar Bolton - skylar.bolton@gmail.com
- *  Last Updated  - 2018/06/18
+ *  Josh Bender   - jbendercode@gmail.com
+ *  Last Updated  - 2019/01/12
 **/
 
 const proverbs    = [];
@@ -14,6 +15,7 @@ var phrase;
 var meaning;
 var example;
 var phrases_select;
+var debug = false;
 
 /**
  * On document loaded
@@ -199,7 +201,7 @@ function newTab() {
  * Refresh content on page
  */
 function refreshDisplay(){
-  console.log("refreshDisplay");
+  log("refreshDisplay");
   if (currently == "root"){
     displayLatinRoot(getRandomFromArray(latin_roots));
   } else {
@@ -210,7 +212,7 @@ function refreshDisplay(){
 }
 
 function setExample(examples){
-  console.log("setExample");
+  log("setExample");
   var array = examples.split(";");
 
   var formatted = "<table><tbody>";
@@ -257,7 +259,7 @@ function viewed(name, is_root){
 }
 
 function setRoot(){
-  console.log("setRoot");
+  log("setRoot");
   currently = "root";
   chrome.storage.sync.set({"default": "root"});
   phrases_select.toggleClass("selected-mode");
@@ -266,7 +268,7 @@ function setRoot(){
 }
 
 function setPhrase(){
-  console.log("setPhrase");
+  log("setPhrase");
   chrome.storage.sync.set({"default": "phrase"});
   currently = "proverb";
   phrases_select.toggleClass("selected-mode");
@@ -300,6 +302,12 @@ function getRandomFromArray(arrayToChooseFrom){
 function fadeIn(element) {
   element.css('opacity', 0);
   element.fadeTo( "slow", .8);
+}
+
+function log(objext){
+  if(debug){
+    console.log(object);
+  }
 }
 
 //https://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript
