@@ -21,9 +21,11 @@ var debug = false;
  * On document loaded
  */
 document.addEventListener("DOMContentLoaded", function() {
-  $.getJSON("/lib/latin_roots.json", function(json) {
-    $(json).each(function(layer, value){
-      latin_roots.push(value);
+  $('abcdefghijlmnopqrstuvx'.split("")).each(function(index, file_name){
+    $.getJSON("/lib/latin/roots/"+file_name+".json", function(json) {
+      $(json).each(function(layer, value){
+        latin_roots.push(value);
+      });
     });
   });
   $.getJSON("/lib/latin_phrases.json", function(json) {
