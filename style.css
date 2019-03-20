@@ -150,8 +150,18 @@ td {
   cursor: pointer;
 }
 
-.selected-mode {
+#roots_select.selected-mode {
   color: steelblue;
+}
+#phrases_select.selected-mode {
+  color: #AA3939;
+}
+#count {
+  color: white;
+  float: left;
+  position: absolute;
+  bottom: 10;
+  text-align: left;
 }
 #footer .roots a{
   color: steelblue;
@@ -201,7 +211,6 @@ td {
 }
 
 #footer {
-  opacity: 0;
   position: absolute;
   bottom: 10;
   color: #4A4A4A;
