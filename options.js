@@ -1,13 +1,21 @@
-var rootExamples = true;
+boolean_buttons = ['hideCount', 'rootExamples'];
 $(document).ready(function(){
-  chrome.storage.sync.get(['rootExamples'], function(data) {
-    if (typeof(data.rootExamples) != "undefined") rootExamples = data.rootExamples;
-    $('#rootExamples').prop('checked', rootExamples)
-  });
-  $('#rootExamples').click(function() {
-    rootExamples = $('#rootExamples').prop('checked');
-    chrome.storage.sync.set({'rootExamples': rootExamples}, function() {
-      console.log("Saved rootExamples");
+  $.each(boolean_buttons, function(i, boolean_button){
+    window[boolean_button] = false;
+    chrome.storage.sync.get([boolean_button], function(data) {
+      if (typeof(data[boolean_button]) != "undefined") {
+        window[boolean_button] = data[boolean_button];
+      }
+      $('#'+boolean_button).prop('checked', window[boolean_button])
+      $('#'+boolean_button).click(function(event) {
+        var chrome_key_value = {};
+        chrome_key_value[boolean_button] = $('#'+boolean_button).prop('checked');
+        chrome.storage.sync.set(chrome_key_value, function() {
+          console.log("Saved!", chrome_key_value);
+        });
+        $('.notice').html("Refresh required!");
+      });
     });
+
   });
 });

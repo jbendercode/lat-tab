@@ -1,6 +1,7 @@
-/** Josh Bender   - jbendercode@gmail.com
+/**
  *  Skylar Bolton - skylar.bolton@gmail.com
- *  Last Updated  - 2018/06/18
+ *  Josh Bender   - jbendercode@gmail.com
+ *  Last Updated  - 2019/01/12
 **/
 
 const proverbs    = [];
@@ -8,12 +9,13 @@ const latin_roots = [];
 var searching_in  = "Latin";
 var currently     = "proverb";
 var refresh;
-var roots;
+var roots_select;
 var footer;
 var phrase;
 var meaning;
 var example;
-var phrases;
+var phrases_select;
+var debug = false;
 
 /**
  * On document loaded
@@ -155,36 +157,39 @@ function loadProverbListener(){
  */
 function newTab() {
   // Initialize refresh and footer element
-  search  = $("#search-roots-and-proverbs");
-  refresh = $("#refresh");
-  roots   = $("#roots");
-  footer  = $("#footer");
-  phrase  = $("#phrase");
-  meaning = $("#meaning");
-  example = $("#example");
-  phrases = $("#phrases");
+  search         = $("#search-roots-and-proverbs");
+  refresh        = $("#refresh");
+  footer         = $("#footer");
+  phrase         = $("#phrase");
+  meaning        = $("#meaning");
+  example        = $("#example");
+  roots_select   = $("#roots_select");
+  phrases_select = $("#phrases_select");
 
   chrome.storage.sync.get("default", function(item) {
     if (item['default'] == "root"){
-      roots.toggleClass("selected-mode");
+      roots_select.toggleClass("selected-mode");
       currently = "root";
       $('#search-roots-and-proverbs').attr("placeholder", "Search "+currently+"s in "+searching_in);
     } else {
-      phrases.toggleClass("selected-mode");
+      phrases_select.toggleClass("selected-mode");
       currently = "proverb";
       $('#search-roots-and-proverbs').attr("placeholder", "Search "+currently+"s in "+searching_in);
+    }
+    if(hideCount){
+      $("#count").hide();
     }
 
     fadeIn(refresh);
     refreshDisplay();
 
     refresh.click(refreshDisplay);
-    phrases.click(function(){
+    phrases_select.click(function(){
       if (currently != "proverb"){
         setPhrase();
       }
     });
-    roots.click(function(){
+    roots_select.click(function(){
       if (currently != "root"){
         setRoot();
       }
@@ -196,7 +201,7 @@ function newTab() {
  * Refresh content on page
  */
 function refreshDisplay(){
-  console.log("refreshDisplay");
+  log("refreshDisplay");
   if (currently == "root"){
     displayLatinRoot(getRandomFromArray(latin_roots));
   } else {
@@ -207,7 +212,7 @@ function refreshDisplay(){
 }
 
 function setExample(examples){
-  console.log("setExample");
+  log("setExample");
   var array = examples.split(";");
 
   var formatted = "<table><tbody>";
@@ -221,21 +226,53 @@ function setExample(examples){
   example.html(formatted);
 }
 
+function viewed(name, is_root){
+  // TODO store count in JSON for Roots and Proverbs
+  // https://developer.chrome.com/extensions/storage#property-local
+  key = "";
+  if(is_root){
+    key = "root_"+name[0]
+  }else{
+    key = "proverb_"+name[0]
+  }
+
+  chrome.storage.sync.get([key], function(result) {
+    var views_hash = {};
+    if(result[key] !== undefined){
+      views_hash = JSON.parse(result[key])
+    }
+
+    var count = views_hash[name];
+    if(count === undefined){
+      count = 1;
+    }else{
+      count++;
+    }
+    $("#count").html(count);
+    views_hash[name] = count
+
+    //Now save it
+    var news_counts  = {}
+    news_counts[key] = JSON.stringify(views_hash);
+    chrome.storage.sync.set(news_counts);
+  });
+}
+
 function setRoot(){
-  console.log("setRoot");
+  log("setRoot");
   currently = "root";
   chrome.storage.sync.set({"default": "root"});
-  phrases.toggleClass("selected-mode");
-  roots.toggleClass("selected-mode");
+  phrases_select.toggleClass("selected-mode");
+  roots_select.toggleClass("selected-mode");
   refreshDisplay();
 }
 
 function setPhrase(){
-  console.log("setPhrase");
+  log("setPhrase");
   chrome.storage.sync.set({"default": "phrase"});
   currently = "proverb";
-  phrases.toggleClass("selected-mode");
-  roots.toggleClass("selected-mode");
+  phrases_select.toggleClass("selected-mode");
+  roots_select.toggleClass("selected-mode");
   refreshDisplay();
 }
 
@@ -246,6 +283,7 @@ function displayLatinRoot(root){
     setExample(root.examples_definitions);
   }
   $('#search-roots-and-proverbs').attr("placeholder", "Search Latin roots");
+  viewed(root.root, true)
 }
 
 function displayProverb(proverb){
@@ -253,6 +291,7 @@ function displayProverb(proverb){
   meaning.html(proverb.meaning);
   example.html("");
   $('#search-roots-and-proverbs').attr("placeholder", "Searching "+currently+"s in "+searching_in);
+  viewed(proverb.lat, false)
 }
 
 function getRandomFromArray(arrayToChooseFrom){
@@ -263,6 +302,12 @@ function getRandomFromArray(arrayToChooseFrom){
 function fadeIn(element) {
   element.css('opacity', 0);
   element.fadeTo( "slow", .8);
+}
+
+function log(objext){
+  if(debug){
+    console.log(object);
+  }
 }
 
 //https://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript

@@ -50,5 +50,8 @@ h3 {
 .option {
   display: flex;
   color: #CACACA;
-
+}
+.notice{
+  color: #AAA;
+  font-size: 12px;
 }
