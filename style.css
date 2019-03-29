@@ -213,14 +213,19 @@ td {
 #footer {
   position: absolute;
   bottom: 10;
-  color: #4A4A4A;
+  color: #6f6f6f;
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
   right: 20px;
 }
 
 #footer .title {
   font-weight: bold;
+  color: #6f6f6f;
 }
+#footer .title:hover{
+  color: #CACACA;
+}
+
 #footer, #editors{
   text-align: right;
 }
