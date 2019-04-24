@@ -17,10 +17,7 @@ var example;
 var phrases_select;
 var debug = false;
 
-/**
- * On document loaded
- */
-document.addEventListener("DOMContentLoaded", function() {
+$(function() {
   $('abcdefghijlmnopqrstuvx'.split("")).each(function(index, file_name){
     $.getJSON("/lib/latin/roots/"+file_name+".json", function(json) {
       $(json).each(function(layer, value){
@@ -34,30 +31,29 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     newTab();
   });
+  loadClickListeners();
+});
+
+function loadClickListeners(){
   $('#exchange-icon').click(function(){
-    if(searching_in == "Latin"){
-      searching_in = "English"
-    }else{
-      searching_in = "Latin"
-    }
+    searching_in = searching_in == "Latin" ? "English" :  "Latin";
     $('#search-roots-and-proverbs').attr("placeholder", "Searching "+currently+"s in "+searching_in);
     $("#search-roots-and-proverbs").focus();
   });
+
   $('#search-icon').click(function(){
     $('#search-icon').hide();
     $("#search-and-exchange").slideDown();
     $("#search-roots-and-proverbs").focus();
   });
-  $('#search-form').on('submit', function(e) { //use on if jQuery 1.7+
-    e.preventDefault();
-  });
+
   $('#search-roots-and-proverbs').keyup(function() {
     var search_text  = $('#search-roots-and-proverbs').val().trim().toLowerCase();
     if(search_text .length > 0) {
       search_for(search_text);
     }
   });
-});
+}
 
 function search_for(search_text){
   check  = ""
@@ -216,7 +212,6 @@ function refreshDisplay(){
 function setExample(examples){
   log("setExample");
   var array = examples.split(";");
-
   var formatted = "<table><tbody>";
   var word_and_use = [];
   $(array).each(function(index, value){
@@ -279,6 +274,7 @@ function setPhrase(){
 }
 
 function displayLatinRoot(root){
+  log("displayLatinRoot");
   phrase.html(root.root);
   meaning.html(root.meaning);
   if (rootExamples){
@@ -289,6 +285,7 @@ function displayLatinRoot(root){
 }
 
 function displayProverb(proverb){
+  log("displayProverb");
   phrase.html(proverb.lat);
   meaning.html(proverb.meaning);
   example.html("");
@@ -302,6 +299,7 @@ function getRandomFromArray(arrayToChooseFrom){
 }
 
 function fadeIn(element) {
+  log("fadeIn");
   element.css('opacity', 0);
   element.fadeTo( "slow", .8);
 }
