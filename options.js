@@ -1,5 +1,5 @@
 boolean_buttons = ['hideCount', 'rootExamples'];
-$(document).ready(function(){
+$(function() {
   $.each(boolean_buttons, function(i, boolean_button){
     window[boolean_button] = false;
     chrome.storage.sync.get([boolean_button], function(data) {
