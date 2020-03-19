@@ -18,4 +18,22 @@ $(function() {
     });
 
   });
+  $('#clear-favorites').click(function(){
+    if (confirm("Are you sure?")) {
+      $('abcdefghijklmnopqrstuvwxyz'.split("")).each(function(index, letter){
+        chrome.storage.sync.remove("fav_root_" + letter);
+        chrome.storage.sync.remove("fav_proverb_" + letter);
+      });
+      $('.notice').html("Favorites cleared!");
+    }
+  });
+  $('#clear-count').click(function(){
+    if (confirm("Are you sure?")) {
+      $('abcdefghijklmnopqrstuvwxyz'.split("")).each(function(index, letter){
+        chrome.storage.sync.remove("root_" + letter);
+        chrome.storage.sync.remove("proverb_" + letter);
+      });
+      $('.notice').html("Counts cleared!");
+    }
+  });
 });

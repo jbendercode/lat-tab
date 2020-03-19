@@ -36,7 +36,7 @@ body {
   width: 150px;
 }
 
-h3 {
+h3, h4 {
   color: #EEEEEE;
   margin: .5rem;
 }
@@ -53,5 +53,8 @@ h3 {
 }
 .notice{
   color: #AAA;
-  font-size: 12px;
+  font-size: 14px;
+}
+#clear-favorites, #clear-count {
+  margin-top: .5rem;
 }

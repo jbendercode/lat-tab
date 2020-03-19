@@ -15,10 +15,12 @@ var phrase;
 var meaning;
 var example;
 var phrases_select;
-var debug = false;
+
+const debug = true;
+const root_starting_letters = "abcdefghijlmnopqrstuvx";
 
 $(function() {
-  $('abcdefghijlmnopqrstuvx'.split("")).each(function(index, file_name){
+  $(root_starting_letters.split("")).each(function(index, file_name){
     $.getJSON("/lib/latin/roots/"+file_name+".json", function(json) {
       $(json).each(function(layer, value){
         latin_roots.push(value);
@@ -239,12 +241,12 @@ function viewed(name, is_root){
 
   chrome.storage.sync.get([key], function(result) {
     var views_hash = {};
-    console.log(key);
-      console.log(result);
-      console.log(result[key]);
+    log(key);
+    log(result);
+    log(result[key]);
     if(result[key] !== undefined){
       views_hash = JSON.parse(result[key])
-      console.log(views_hash);
+      log(views_hash);
     }
 
     var count = views_hash[name];
@@ -274,7 +276,7 @@ function check_favorite(name, is_root){
   }
 
   chrome.storage.sync.get([key], function(result) {
-    console.log(result);
+    log(result);
     var likes_hash = {};
     if(result[key] !== undefined){
       likes_hash = JSON.parse(result[key])
@@ -303,7 +305,7 @@ function is_favoriting(name, is_root, liking){
     if(result[key] !== undefined){
       likes_hash = JSON.parse(result[key])
     }
-    console.log(likes_hash);
+    log(likes_hash);
     $("#favorite").toggleClass("liked", liking);
     likes_hash[name] = liking
 
@@ -365,7 +367,7 @@ function fadeIn(element) {
   element.fadeTo( "slow", .8);
 }
 
-function log(objext){
+function log(object){
   if(debug){
     console.log(object);
   }
