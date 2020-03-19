@@ -16,7 +16,7 @@ var meaning;
 var example;
 var phrases_select;
 
-const debug = true;
+const debug = false;
 const root_starting_letters = "abcdefghijlmnopqrstuvx";
 
 $(function() {
