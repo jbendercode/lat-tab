@@ -156,12 +156,41 @@ td {
 #phrases_select.selected-mode {
   color: #AA3939;
 }
-#count {
-  color: white;
-  float: left;
+.current-options {
   position: absolute;
   bottom: 10;
   text-align: left;
+}
+#count {
+  display: inline;
+  color: white;
+  padding-right: .5em;
+  font-size: 20px;
+}
+#favorite {
+  display: inline;
+  color: white;
+  bottom: 0;
+  position: absolute;
+}
+#favorite svg{
+  display: inline;
+  fill: white;
+  width: 16px;
+  height: 16px;
+}
+#favorite.liked svg.heart-light{
+  display: none;
+}
+#favorite svg.heart-light:hover{
+  fill: hotpink;
+}
+#favorite svg.heart-solid{
+  display: none;
+  fill: hotpink;
+}
+#favorite.liked svg.heart-solid{
+  display: inline;
 }
 #footer .roots a{
   color: steelblue;

@@ -1,7 +1,7 @@
 /**
  *  Skylar Bolton - skylar.bolton@gmail.com
  *  Josh Bender   - jbendercode@gmail.com
- *  Last Updated  - 2019/01/12
+ *  Last Updated  - 2020/03/18
 **/
 
 const proverbs    = [];
@@ -52,6 +52,9 @@ function loadClickListeners(){
     if(search_text .length > 0) {
       search_for(search_text);
     }
+  });
+  $('#favorite').click(function(){
+    is_favoriting(phrase.html(), currently == "root", !$('#favorite').hasClass("liked"));
   });
 }
 
@@ -226,7 +229,8 @@ function setExample(examples){
 function viewed(name, is_root){
   // TODO store count in JSON for Roots and Proverbs
   // https://developer.chrome.com/extensions/storage#property-local
-  key = "";
+  // Key is first letter of word
+  var key = "";
   if(is_root){
     key = "root_"+name[0]
   }else{
@@ -235,8 +239,12 @@ function viewed(name, is_root){
 
   chrome.storage.sync.get([key], function(result) {
     var views_hash = {};
+    console.log(key);
+      console.log(result);
+      console.log(result[key]);
     if(result[key] !== undefined){
       views_hash = JSON.parse(result[key])
+      console.log(views_hash);
     }
 
     var count = views_hash[name];
@@ -249,9 +257,60 @@ function viewed(name, is_root){
     views_hash[name] = count
 
     //Now save it
-    var news_counts  = {}
-    news_counts[key] = JSON.stringify(views_hash);
-    chrome.storage.sync.set(news_counts);
+    var new_count  = {}
+    new_count[key] = JSON.stringify(views_hash);
+    chrome.storage.sync.set(new_count);
+  });
+}
+
+function check_favorite(name, is_root){
+  // TODO store count in JSON for Roots and Proverbs
+  // https://developer.chrome.com/extensions/storage#property-local
+  var key = "";
+  if(is_root){
+    key = "fav_root_"+name[0]
+  }else{
+    key = "fav_proverb_"+name[0]
+  }
+
+  chrome.storage.sync.get([key], function(result) {
+    console.log(result);
+    var likes_hash = {};
+    if(result[key] !== undefined){
+      likes_hash = JSON.parse(result[key])
+      if(likes_hash[name] == 1){
+        $("#favorite").toggleClass("liked", true);
+        return true;
+      }
+    }
+    $("#favorite").toggleClass("liked", false);
+    return false;
+  });
+}
+function is_favoriting(name, is_root, liking){
+  // TODO store count in JSON for Roots and Proverbs
+  // https://developer.chrome.com/extensions/storage#property-local
+
+  var key = "";
+  if(is_root){
+    key = "fav_root_"+name[0]
+  }else{
+    key = "fav_proverb_"+name[0]
+  }
+
+  chrome.storage.sync.get([key], function(result) {
+    var likes_hash = {};
+    if(result[key] !== undefined){
+      likes_hash = JSON.parse(result[key])
+    }
+    console.log(likes_hash);
+    $("#favorite").toggleClass("liked", liking);
+    likes_hash[name] = liking
+
+    //Now save it
+    var new_likes  = {}
+    new_likes[key] = JSON.stringify(likes_hash);
+    chrome.storage.sync.set(new_likes);
   });
 }
 
@@ -282,6 +341,7 @@ function displayLatinRoot(root){
   }
   $('#search-roots-and-proverbs').attr("placeholder", "Search Latin roots");
   viewed(root.root, true)
+  check_favorite(root.root, true);
 }
 
 function displayProverb(proverb){
@@ -291,6 +351,7 @@ function displayProverb(proverb){
   example.html("");
   $('#search-roots-and-proverbs').attr("placeholder", "Searching "+currently+"s in "+searching_in);
   viewed(proverb.lat, false)
+  check_favorite(proverb.lat, false);
 }
 
 function getRandomFromArray(arrayToChooseFrom){
