@@ -137,7 +137,7 @@ table {
  */
 
 body {
-  background: url(./mask.png) #242424 repeat center;
+  background: url(./images/mask.png) #242424 repeat center;
   font-family: 'Playfair Display', serif;
 }
 
@@ -258,23 +258,23 @@ td {
   bottom: 0;
   position: absolute;
 }
-#favorite svg {
+#favorite img {
   display: inline;
   fill: white;
   width: 16px;
   height: 16px;
 }
-#favorite.liked svg.heart-light {
+#favorite.liked img.heart-light {
   display: none;
 }
-#favorite svg.heart-light:hover {
+#favorite img.heart-light:hover {
   fill: hotpink;
 }
-#favorite svg.heart-solid {
+#favorite img.heart-solid {
   display: none;
   fill: hotpink;
 }
-#favorite.liked svg.heart-solid {
+#favorite.liked img.heart-solid {
   display: inline;
 }
 #footer .roots a {
