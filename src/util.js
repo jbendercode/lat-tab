@@ -8,7 +8,7 @@ export function getRandomFromArray(arrayToChooseFrom) {
 export function fadeIn(element) {
   log('fadeIn: ' + element.selector)
   element.css('opacity', 0)
-  element.fadeTo('slow', 0.8)
+  element.fadeTo('slow', 1)
 }
 
 export function log(object) {

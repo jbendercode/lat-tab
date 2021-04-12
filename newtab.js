@@ -43,7 +43,7 @@ $(function () {
 
 function loadClickListeners() {
   $('#exchange-icon').click(function () {
-    searching_in = searching_in == 'Latin' ? 'English' : 'Latin'
+    setSearchingIn(searching_in == 'Latin' ? 'English' : 'Latin')
     setSearchPlaceholder()
     $('#search-roots-and-proverbs').focus()
   })
@@ -69,22 +69,6 @@ function loadClickListeners() {
 }
 
 function search_for(search_text) {
-  if (searching_in == 'Latin') {
-    if (currently == 'root') {
-      search = latin_roots
-      check = 'root'
-    } else {
-      search = proverbs
-      check = 'lat'
-    }
-  } else {
-    check = 'meaning'
-    if (currently == 'root') {
-      search = latin_roots
-    } else {
-      search = proverbs
-    }
-  }
   let result = $.grep(search, function (e) {
     return matchRuleShort(e[check].toLowerCase(), search_text)
   })
@@ -189,14 +173,11 @@ function newTab() {
   chrome.storage.sync.get('default', function (item) {
     if (item['default'] == 'root') {
       roots_select.toggleClass('selected-mode')
-      currently = 'root'
-      $('#search-roots-and-proverbs').attr(
-        'placeholder',
-        'Search ' + currently + 's in ' + searching_in
-      )
+      setCurrently('root')
+      setSearchPlaceholder()
     } else {
       phrases_select.toggleClass('selected-mode')
-      currently = 'proverb'
+      setCurrently('proverb')
       setSearchPlaceholder()
     }
     if (hideCount) {
@@ -249,13 +230,12 @@ function setExample(examples) {
       '<td></tr>'
   })
   formatted += '</tbody></table>'
-
   example.html(formatted)
 }
 
 function setRoot() {
   log('setRoot')
-  currently = 'root'
+  setCurrently('root')
   chrome.storage.sync.set({ default: 'root' })
   phrases_select.toggleClass('selected-mode')
   roots_select.toggleClass('selected-mode')
@@ -265,10 +245,39 @@ function setRoot() {
 function setPhrase() {
   log('setPhrase')
   chrome.storage.sync.set({ default: 'phrase' })
-  currently = 'proverb'
+  setCurrently('proverb')
   phrases_select.toggleClass('selected-mode')
   roots_select.toggleClass('selected-mode')
   refreshDisplay()
+}
+
+function setSearchingIn(newSearchingIn) {
+  searching_in = newSearchingIn
+  updateSearchAndCheck()
+}
+
+function setCurrently(newCurrently) {
+  currently = newCurrently
+  updateSearchAndCheck()
+}
+
+function updateSearchAndCheck() {
+  if (searching_in == 'Latin') {
+    if (currently == 'root') {
+      search = latin_roots
+      check = 'root'
+    } else {
+      search = proverbs
+      check = 'lat'
+    }
+  } else {
+    check = 'meaning'
+    if (currently == 'root') {
+      search = latin_roots
+    } else {
+      search = proverbs
+    }
+  }
 }
 
 function setSearchPlaceholder() {
