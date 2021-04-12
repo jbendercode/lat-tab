@@ -4,37 +4,37 @@
  *  Last Updated  - 2021/04/11
  **/
 
-const proverbs = []
-const latin_roots = []
-let searching_in = 'Latin'
+const latinPhrases = []
+const latinRoots = []
+let searchingIn = 'Latin'
 let currently = 'proverb'
 let check = ''
 let options = ''
 let search
 let refresh
-let roots_select
+let rootsSelect
 let phrase
 let meaning
 let example
-let phrases_select
+let phrasesSelect
 
-const root_starting_letters = 'abcdefghijlmnopqrstuvx'
+const rootStartingLetter = 'abcdefghijlmnopqrstuvx'
 
 import { viewed } from './src/viewed.js'
 import { check_favorite, is_favoriting } from './src/favorites.js'
 import { getRandomFromArray, fadeIn, log, matchRuleShort } from './src/util.js'
 
 $(function () {
-  $(root_starting_letters.split('')).each(function (index, file_name) {
+  $(rootStartingLetter.split('')).each(function (index, file_name) {
     $.getJSON('/lib/latin/roots/' + file_name + '.json', function (json) {
       $(json).each(function (layer, value) {
-        latin_roots.push(value)
+        latinRoots.push(value)
       })
     })
   })
   $.getJSON('/lib/latin_phrases.json', function (json) {
     $(json).each(function (layer, value) {
-      proverbs.push(value)
+      latinPhrases.push(value)
     })
     newTab()
   })
@@ -43,7 +43,7 @@ $(function () {
 
 function loadClickListeners() {
   $('#exchange-icon').click(function () {
-    setSearchingIn(searching_in == 'Latin' ? 'English' : 'Latin')
+    setSearchingIn(searchingIn == 'Latin' ? 'English' : 'Latin')
     setSearchPlaceholder()
     $('#search-roots-and-proverbs').focus()
   })
@@ -93,7 +93,7 @@ function search_for(search_text) {
 function pushResults(results) {
   options = []
   $(results).each(function (index, value) {
-    if (searching_in == 'English') {
+    if (searchingIn == 'English') {
       if (currently == 'proverb') {
         options.push(
           "<a href='#' class='load-proverb'>" + value.meaning + '</a>'
@@ -122,12 +122,12 @@ function pushResults(results) {
 function loadRootListener() {
   $('.load-root').click(function (selected_search) {
     let result
-    if (searching_in == 'Latin') {
-      result = $.grep(latin_roots, function (e) {
+    if (searchingIn == 'Latin') {
+      result = $.grep(latinRoots, function (e) {
         return matchRuleShort(e.root, $(selected_search.target).text())
       })[0]
     } else {
-      result = $.grep(latin_roots, function (e) {
+      result = $.grep(latinRoots, function (e) {
         return matchRuleShort(e.meaning, $(selected_search.target).text())
       })[0]
     }
@@ -141,12 +141,12 @@ function loadRootListener() {
 function loadProverbListener() {
   $('.load-proverb').click(function (selected_search) {
     let result
-    if (searching_in == 'Latin') {
-      result = $.grep(proverbs, function (e) {
+    if (searchingIn == 'Latin') {
+      result = $.grep(latinPhrases, function (e) {
         return matchRuleShort(e.lat, $(selected_search.target).text())
       })[0]
     } else {
-      result = $.grep(proverbs, function (e) {
+      result = $.grep(latinPhrases, function (e) {
         return matchRuleShort(e.meaning, $(selected_search.target).text())
       })[0]
     }
@@ -167,16 +167,16 @@ function newTab() {
   phrase = $('#phrase')
   meaning = $('#meaning')
   example = $('#example')
-  roots_select = $('#roots_select')
-  phrases_select = $('#phrases_select')
+  rootsSelect = $('#rootsSelect')
+  phrasesSelect = $('#phrasesSelect')
 
   chrome.storage.sync.get('default', function (item) {
     if (item['default'] == 'root') {
-      roots_select.toggleClass('selected-mode')
+      rootsSelect.toggleClass('selected-mode')
       setCurrently('root')
       setSearchPlaceholder()
     } else {
-      phrases_select.toggleClass('selected-mode')
+      phrasesSelect.toggleClass('selected-mode')
       setCurrently('proverb')
       setSearchPlaceholder()
     }
@@ -188,12 +188,12 @@ function newTab() {
     refreshDisplay()
 
     refresh.click(refreshDisplay)
-    phrases_select.click(function () {
+    phrasesSelect.click(function () {
       if (currently != 'proverb') {
         setPhrase()
       }
     })
-    roots_select.click(function () {
+    rootsSelect.click(function () {
       if (currently != 'root') {
         setRoot()
       }
@@ -207,9 +207,9 @@ function newTab() {
 function refreshDisplay() {
   log('refreshDisplay')
   if (currently == 'root') {
-    displayLatinRoot(getRandomFromArray(latin_roots))
+    displayLatinRoot(getRandomFromArray(latinRoots))
   } else {
-    displayProverb(getRandomFromArray(proverbs))
+    displayProverb(getRandomFromArray(latinPhrases))
   }
   fadeIn(meaning)
   fadeIn(example)
@@ -237,8 +237,8 @@ function setRoot() {
   log('setRoot')
   setCurrently('root')
   chrome.storage.sync.set({ default: 'root' })
-  phrases_select.toggleClass('selected-mode')
-  roots_select.toggleClass('selected-mode')
+  phrasesSelect.toggleClass('selected-mode')
+  rootsSelect.toggleClass('selected-mode')
   refreshDisplay()
 }
 
@@ -246,13 +246,13 @@ function setPhrase() {
   log('setPhrase')
   chrome.storage.sync.set({ default: 'phrase' })
   setCurrently('proverb')
-  phrases_select.toggleClass('selected-mode')
-  roots_select.toggleClass('selected-mode')
+  phrasesSelect.toggleClass('selected-mode')
+  rootsSelect.toggleClass('selected-mode')
   refreshDisplay()
 }
 
 function setSearchingIn(newSearchingIn) {
-  searching_in = newSearchingIn
+  searchingIn = newSearchingIn
   updateSearchAndCheck()
 }
 
@@ -262,20 +262,20 @@ function setCurrently(newCurrently) {
 }
 
 function updateSearchAndCheck() {
-  if (searching_in == 'Latin') {
+  if (searchingIn == 'Latin') {
     if (currently == 'root') {
-      search = latin_roots
+      search = latinRoots
       check = 'root'
     } else {
-      search = proverbs
+      search = latinPhrases
       check = 'lat'
     }
   } else {
     check = 'meaning'
     if (currently == 'root') {
-      search = latin_roots
+      search = latinRoots
     } else {
-      search = proverbs
+      search = latinPhrases
     }
   }
 }
@@ -283,7 +283,7 @@ function updateSearchAndCheck() {
 function setSearchPlaceholder() {
   $('#search-roots-and-proverbs').attr(
     'placeholder',
-    'Search in ' + searching_in
+    'Search in ' + searchingIn
   )
 }
 

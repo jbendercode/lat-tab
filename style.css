@@ -235,10 +235,10 @@ td {
   cursor: pointer;
 }
 
-#roots_select.selected-mode {
+#rootsSelect.selected-mode {
   color: steelblue;
 }
-#phrases_select.selected-mode {
+#phrasesSelect.selected-mode {
   color: #aa3939;
 }
 .current-options {
