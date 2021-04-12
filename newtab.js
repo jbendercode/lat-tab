@@ -6,18 +6,21 @@
 
 const proverbs    = [];
 const latin_roots = [];
-var searching_in  = "Latin";
-var currently     = "proverb";
-var refresh;
-var roots_select;
-var footer;
-var phrase;
-var meaning;
-var example;
-var phrases_select;
+let searching_in  = "Latin";
+let currently     = "proverb";
+let search;
+let refresh;
+let roots_select;
+let footer;
+let phrase;
+let meaning;
+let example;
+let phrases_select;
 
-const debug = false;
 const root_starting_letters = "abcdefghijlmnopqrstuvx";
+
+import {check_favorite, is_favoriting} from './src/favorites.js'
+import {getRandomFromArray, fadeIn, log, matchRuleShort} from './src/util.js'
 
 $(function() {
   $(root_starting_letters.split("")).each(function(index, file_name){
@@ -38,7 +41,7 @@ $(function() {
 
 function loadClickListeners(){
   $('#exchange-icon').click(function(){
-    searching_in = searching_in == "Latin" ? "English" :  "Latin";
+    searching_in = searching_in == "Latin" ? "English" : "Latin";
     $('#search-roots-and-proverbs').attr("placeholder", "Searching "+currently+"s in "+searching_in);
     $("#search-roots-and-proverbs").focus();
   });
@@ -50,13 +53,13 @@ function loadClickListeners(){
   });
 
   $('#search-roots-and-proverbs').keyup(function() {
-    var search_text  = $('#search-roots-and-proverbs').val().trim().toLowerCase();
+    const search_text  = $('#search-roots-and-proverbs').val().trim().toLowerCase();
     if(search_text .length > 0) {
       search_for(search_text);
     }
   });
   $('#favorite').click(function(){
-    is_favoriting(phrase.html(), !$('#favorite').hasClass("liked"));
+    is_favoriting(currently, phrase.html(), !$('#favorite').hasClass("liked"));
   });
 }
 
@@ -79,7 +82,7 @@ function search_for(search_text){
       search = proverbs
     }
   }
-  var result = $.grep(search, function(e){ return matchRuleShort(e[check].toLowerCase(), search_text); });
+  let result = $.grep(search, function(e){ return matchRuleShort(e[check].toLowerCase(), search_text); });
   if (result != null){
     if(result.length > 1){
       pushResults(result);
@@ -127,7 +130,7 @@ function pushResults(results){
 
 function loadRootListener(){
   $('.load-root').click(function(selected_search){
-    var result;
+    let result;
     if(searching_in == "Latin"){
       result = $.grep(latin_roots, function(e){ return matchRuleShort(e.root, $(selected_search.target).text())})[0];
     }else{
@@ -142,7 +145,7 @@ function loadRootListener(){
 
 function loadProverbListener(){
   $('.load-proverb').click(function(selected_search){
-    var result;
+    let result;
     if(searching_in == "Latin"){
       result = $.grep(proverbs, function(e){ return matchRuleShort(e.lat, $(selected_search.target).text())})[0];
     }else{
@@ -216,9 +219,9 @@ function refreshDisplay(){
 
 function setExample(examples){
   log("setExample");
-  var array = examples.split(";");
-  var formatted = "<table><tbody>";
-  var word_and_use = [];
+  const array = examples.split(";");
+  let formatted = "<table><tbody>";
+  let word_and_use = [];
   $(array).each(function(index, value){
     word_and_use = value.split(" - ");
     formatted += "<tr><td>"+word_and_use[0]+":</td><td>"+word_and_use[1]+"<td></tr>";
@@ -232,13 +235,13 @@ function viewed(name){
   const key = currently + "_count_" + name[0].toLowerCase()
   log(key)
   chrome.storage.sync.get([key], function(result) {
-    var views_hash = {};
+    let views_hash = {};
     log(result);
     if(result[key] !== undefined){
       views_hash = JSON.parse(result[key])
     }
 
-    var count = views_hash[name];
+    let count = views_hash[name];
     if(count === undefined){
       count = 1;
     }else{
@@ -249,46 +252,9 @@ function viewed(name){
     log(views_hash);
 
     //Now save it
-    var new_count  = {}
+    let new_count  = {}
     new_count[key] = JSON.stringify(views_hash);
     chrome.storage.sync.set(new_count);
-  });
-}
-
-function check_favorite(name){
-  const key = currently + "_fav_" + name[0].toLowerCase()
-  log(key)
-  chrome.storage.sync.get([key], function(result) {
-    var favs_hash = {};
-    if(result[key] !== undefined){
-      favs_hash = JSON.parse(result[key])
-      log(favs_hash);
-      if(favs_hash[name] == 1){
-        $("#favorite").toggleClass("liked", true);
-        return true;
-      }
-    }
-    $("#favorite").toggleClass("liked", false);
-    return false;
-  });
-}
-
-function is_favoriting(name, liking){
-  const key = currently + "_fav_" + name[0].toLowerCase()
-
-  chrome.storage.sync.get([key], function(result) {
-    var favs_hash = {};
-    if(result[key] !== undefined){
-      favs_hash = JSON.parse(result[key])
-    }
-    log(favs_hash);
-    $("#favorite").toggleClass("liked", liking);
-    favs_hash[name] = liking
-
-    //Now save it
-    var new_likes  = {}
-    new_likes[key] = JSON.stringify(favs_hash);
-    chrome.storage.sync.set(new_likes);
   });
 }
 
@@ -319,7 +285,7 @@ function displayLatinRoot(root){
   }
   $('#search-roots-and-proverbs').attr("placeholder", "Search Latin roots");
   viewed(root.root)
-  check_favorite(root.root);
+  check_favorite(currently, root.root);
 }
 
 function displayProverb(proverb){
@@ -329,27 +295,6 @@ function displayProverb(proverb){
   example.html("");
   $('#search-roots-and-proverbs').attr("placeholder", "Searching "+currently+"s in "+searching_in);
   viewed(proverb.lat)
-  check_favorite(proverb.lat);
+  check_favorite(currently, proverb.lat);
 }
 
-function getRandomFromArray(arrayToChooseFrom){
-  var randomIndx =  Math.floor(Math.random() * arrayToChooseFrom.length);
-  return arrayToChooseFrom[randomIndx];
-}
-
-function fadeIn(element) {
-  log("fadeIn: "+ element.selector);
-  element.css('opacity', 0);
-  element.fadeTo( "slow", .8);
-}
-
-function log(object){
-  if(debug){
-    console.debug(object);
-  }
-}
-
-//https://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript
-function matchRuleShort(str, rule) {
-  return new RegExp("^" + rule.replace("*", ".+?") + "$").test(str);
-}
