@@ -19,7 +19,7 @@ $(function() {
 
   });
   $('#clear-favorites').click(function(){
-    if (confirm("Are you sure?")) {
+    if (confirm("Are you sure you want to clear your favorites?")) {
       $('abcdefghijklmnopqrstuvwxyz'.split("")).each(function(index, letter){
         chrome.storage.sync.remove("fav_root_" + letter);
         chrome.storage.sync.remove("fav_proverb_" + letter);
@@ -28,7 +28,7 @@ $(function() {
     }
   });
   $('#clear-count').click(function(){
-    if (confirm("Are you sure?")) {
+    if (confirm("Are you sure you want to clear the count of times you have seen each root & proverb?")) {
       $('abcdefghijklmnopqrstuvwxyz'.split("")).each(function(index, letter){
         chrome.storage.sync.remove("root_" + letter);
         chrome.storage.sync.remove("proverb_" + letter);

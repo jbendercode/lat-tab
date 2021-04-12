@@ -1,7 +1,7 @@
 /**
  *  Skylar Bolton - skylar.bolton@gmail.com
  *  Josh Bender   - jbendercode@gmail.com
- *  Last Updated  - 2020/03/18
+ *  Last Updated  - 2021/04/11
 **/
 
 const proverbs    = [];
@@ -56,7 +56,7 @@ function loadClickListeners(){
     }
   });
   $('#favorite').click(function(){
-    is_favoriting(phrase.html(), currently == "root", !$('#favorite').hasClass("liked"));
+    is_favoriting(phrase.html(), !$('#favorite').hasClass("liked"));
   });
 }
 
@@ -228,25 +228,14 @@ function setExample(examples){
   example.html(formatted);
 }
 
-function viewed(name, is_root){
-  // TODO store count in JSON for Roots and Proverbs
-  // https://developer.chrome.com/extensions/storage#property-local
-  // Key is first letter of word
-  var key = "";
-  if(is_root){
-    key = "root_"+name[0]
-  }else{
-    key = "proverb_"+name[0]
-  }
-
+function viewed(name){
+  const key = currently + "_count_" + name[0].toLowerCase()
+  log(key)
   chrome.storage.sync.get([key], function(result) {
     var views_hash = {};
-    log(key);
     log(result);
-    log(result[key]);
     if(result[key] !== undefined){
       views_hash = JSON.parse(result[key])
-      log(views_hash);
     }
 
     var count = views_hash[name];
@@ -257,6 +246,7 @@ function viewed(name, is_root){
     }
     $("#count").html(count);
     views_hash[name] = count
+    log(views_hash);
 
     //Now save it
     var new_count  = {}
@@ -265,22 +255,15 @@ function viewed(name, is_root){
   });
 }
 
-function check_favorite(name, is_root){
-  // TODO store count in JSON for Roots and Proverbs
-  // https://developer.chrome.com/extensions/storage#property-local
-  var key = "";
-  if(is_root){
-    key = "fav_root_"+name[0]
-  }else{
-    key = "fav_proverb_"+name[0]
-  }
-
+function check_favorite(name){
+  const key = currently + "_fav_" + name[0].toLowerCase()
+  log(key)
   chrome.storage.sync.get([key], function(result) {
-    log(result);
-    var likes_hash = {};
+    var favs_hash = {};
     if(result[key] !== undefined){
-      likes_hash = JSON.parse(result[key])
-      if(likes_hash[name] == 1){
+      favs_hash = JSON.parse(result[key])
+      log(favs_hash);
+      if(favs_hash[name] == 1){
         $("#favorite").toggleClass("liked", true);
         return true;
       }
@@ -289,29 +272,22 @@ function check_favorite(name, is_root){
     return false;
   });
 }
-function is_favoriting(name, is_root, liking){
-  // TODO store count in JSON for Roots and Proverbs
-  // https://developer.chrome.com/extensions/storage#property-local
 
-  var key = "";
-  if(is_root){
-    key = "fav_root_"+name[0]
-  }else{
-    key = "fav_proverb_"+name[0]
-  }
+function is_favoriting(name, liking){
+  const key = currently + "_fav_" + name[0].toLowerCase()
 
   chrome.storage.sync.get([key], function(result) {
-    var likes_hash = {};
+    var favs_hash = {};
     if(result[key] !== undefined){
-      likes_hash = JSON.parse(result[key])
+      favs_hash = JSON.parse(result[key])
     }
-    log(likes_hash);
+    log(favs_hash);
     $("#favorite").toggleClass("liked", liking);
-    likes_hash[name] = liking
+    favs_hash[name] = liking
 
     //Now save it
     var new_likes  = {}
-    new_likes[key] = JSON.stringify(likes_hash);
+    new_likes[key] = JSON.stringify(favs_hash);
     chrome.storage.sync.set(new_likes);
   });
 }
@@ -342,8 +318,8 @@ function displayLatinRoot(root){
     setExample(root.examples_definitions);
   }
   $('#search-roots-and-proverbs').attr("placeholder", "Search Latin roots");
-  viewed(root.root, true)
-  check_favorite(root.root, true);
+  viewed(root.root)
+  check_favorite(root.root);
 }
 
 function displayProverb(proverb){
@@ -352,8 +328,8 @@ function displayProverb(proverb){
   meaning.html(proverb.meaning);
   example.html("");
   $('#search-roots-and-proverbs').attr("placeholder", "Searching "+currently+"s in "+searching_in);
-  viewed(proverb.lat, false)
-  check_favorite(proverb.lat, false);
+  viewed(proverb.lat)
+  check_favorite(proverb.lat);
 }
 
 function getRandomFromArray(arrayToChooseFrom){
@@ -362,14 +338,14 @@ function getRandomFromArray(arrayToChooseFrom){
 }
 
 function fadeIn(element) {
-  log("fadeIn");
+  log("fadeIn: "+ element.selector);
   element.css('opacity', 0);
   element.fadeTo( "slow", .8);
 }
 
 function log(object){
   if(debug){
-    console.log(object);
+    console.debug(object);
   }
 }
 
