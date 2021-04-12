@@ -8,6 +8,8 @@ const proverbs = []
 const latin_roots = []
 let searching_in = 'Latin'
 let currently = 'proverb'
+let check = ''
+let options = ''
 let search
 let refresh
 let roots_select
@@ -18,6 +20,7 @@ let phrases_select
 
 const root_starting_letters = 'abcdefghijlmnopqrstuvx'
 
+import { viewed } from './src/viewed.js'
 import { check_favorite, is_favoriting } from './src/favorites.js'
 import { getRandomFromArray, fadeIn, log, matchRuleShort } from './src/util.js'
 
@@ -41,10 +44,7 @@ $(function () {
 function loadClickListeners() {
   $('#exchange-icon').click(function () {
     searching_in = searching_in == 'Latin' ? 'English' : 'Latin'
-    $('#search-roots-and-proverbs').attr(
-      'placeholder',
-      'Searching ' + currently + 's in ' + searching_in
-    )
+    setSearchPlaceholder()
     $('#search-roots-and-proverbs').focus()
   })
 
@@ -69,8 +69,6 @@ function loadClickListeners() {
 }
 
 function search_for(search_text) {
-  check = ''
-  search = ''
   if (searching_in == 'Latin') {
     if (currently == 'root') {
       search = latin_roots
@@ -199,10 +197,7 @@ function newTab() {
     } else {
       phrases_select.toggleClass('selected-mode')
       currently = 'proverb'
-      $('#search-roots-and-proverbs').attr(
-        'placeholder',
-        'Search ' + currently + 's in ' + searching_in
-      )
+      setSearchPlaceholder()
     }
     if (hideCount) {
       $('#count').hide()
@@ -258,33 +253,6 @@ function setExample(examples) {
   example.html(formatted)
 }
 
-function viewed(name) {
-  const key = currently + '_count_' + name[0].toLowerCase()
-  log(key)
-  chrome.storage.sync.get([key], function (result) {
-    let views_hash = {}
-    log(result)
-    if (result[key] !== undefined) {
-      views_hash = JSON.parse(result[key])
-    }
-
-    let count = views_hash[name]
-    if (count === undefined) {
-      count = 1
-    } else {
-      count++
-    }
-    $('#count').html(count)
-    views_hash[name] = count
-    log(views_hash)
-
-    //Now save it
-    let new_count = {}
-    new_count[key] = JSON.stringify(views_hash)
-    chrome.storage.sync.set(new_count)
-  })
-}
-
 function setRoot() {
   log('setRoot')
   currently = 'root'
@@ -303,6 +271,13 @@ function setPhrase() {
   refreshDisplay()
 }
 
+function setSearchPlaceholder() {
+  $('#search-roots-and-proverbs').attr(
+    'placeholder',
+    'Search in ' + searching_in
+  )
+}
+
 function displayLatinRoot(root) {
   log('displayLatinRoot')
   phrase.html(root.root)
@@ -310,8 +285,8 @@ function displayLatinRoot(root) {
   if (rootExamples) {
     setExample(root.examples_definitions)
   }
-  $('#search-roots-and-proverbs').attr('placeholder', 'Search Latin roots')
-  viewed(root.root)
+  setSearchPlaceholder()
+  viewed(currently, root.root)
   check_favorite(currently, root.root)
 }
 
@@ -320,10 +295,7 @@ function displayProverb(proverb) {
   phrase.html(proverb.lat)
   meaning.html(proverb.meaning)
   example.html('')
-  $('#search-roots-and-proverbs').attr(
-    'placeholder',
-    'Searching ' + currently + 's in ' + searching_in
-  )
-  viewed(proverb.lat)
+  setSearchPlaceholder()
+  viewed(currently, proverb.lat)
   check_favorite(currently, proverb.lat)
 }
