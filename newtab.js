@@ -26,7 +26,7 @@ import { getRandomFromArray, fadeIn, log, matchRuleShort } from './src/util.js'
 
 $(function () {
   $(rootStartingLetter.split('')).each(function (index, file_name) {
-    $.getJSON('/lib/latin/roots/' + file_name + '.json', function (json) {
+    $.getJSON('/lib/roots/' + file_name + '.json', function (json) {
       $(json).each(function (layer, value) {
         latinRoots.push(value)
       })
